@@ -54,3 +54,9 @@ source wb/bin/activate
 pip3 install --upgrade pip
 pip3 install flask
 
+
+# Create Postgresql user
+sudo -u postgres psql -c "CREATE USER portal WITH PASSWORD 'test101';"
+sudo -u postgres createdb worbli-portal
+sudo -u postgres psql -c "grant all privileges on database worbli-portal to portal;"
+
