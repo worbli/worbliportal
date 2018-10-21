@@ -1,5 +1,9 @@
 .vagrant
 wb/
 .env
+*.pyc
+*.pyo
 pf/__pycache__/
+pf/migrations/__pycache__/
+pf/migrations/versions/__pycache__/
 
