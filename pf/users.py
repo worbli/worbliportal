@@ -34,7 +34,7 @@ def registration_removal(registration_id):
         logging.info(type(exc))
         logging.info(str(exc))
         raise InvalidUsage(str(exc), status_code=400)
-    return json_dict
+    return jsonify(json_dict)
 
 @USER_ROUTES.route('/api/registrationRequest/<registration_id>', methods=['GET'])
 def registration_validation(registration_id):
@@ -65,11 +65,6 @@ def registration_request():
             raise InvalidUsage(msg, status_code=400)
         registration_code = create_registration_record(email)
         session.commit()
-    except IntegrityError as pic:
-        logging.info(pic)
-        msg = "user already has a code"
-        session.rollback()
-        raise InvalidUsage(msg, status_code=400)
     except InvalidUsage as iux:
         session.rollback()
         raise iux
@@ -80,7 +75,7 @@ def registration_request():
         raise InvalidUsage(str(exc), status_code=400)
     finally:
         session.close()
-    json_dict = {"registration_code" : registration_code }
+    json_dict = {"registration_code" : registration_code}
     return jsonify(json_dict)
 
 
@@ -134,7 +129,6 @@ def login():
     json_dict = {"success": True}
     return jsonify(json_dict)
 
-# Todo: replace InvalidUsage with custom exception
 def create_user(params):
     """ User creator from params,
         assumes valid registration code
@@ -148,13 +142,18 @@ def create_user(params):
         user.registered_on = datetime.now()
         user.full_name = params["fullName"]
         session.add(user)
+    except IntegrityError as pic:
+        logging.info(pic)
+        msg = "Invalid parameters"
+        session.rollback()
+        raise InvalidUsage(msg, status_code=400)
     except Exception as exc:
         logging.info(type(exc))
         logging.info(str(exc))
         raise InvalidUsage(str(exc), status_code=400)
+    return user
 
 
-# Todo: replace InvalidUsage with custom exception
 def validate_user_create_fields(params):
     """ Method to check for appropriate fields being present
     """
@@ -179,7 +178,6 @@ def validate_registration_record(registration_code=None, email=None):
     return True
 
 
-# Todo: replace general exception with custom exception
 def invalidate_registration_record_by_code(registration_code, invalidation_type='voided'):
     """ Method to find and invalidate registration record
     """
@@ -195,8 +193,11 @@ def invalidate_registration_record_by_code(registration_code, invalidation_type=
             registration_record.spent_on = datetime.now()
         else:
             raise Exception('improper invalidation')
-        session.commit()
-        session.close()
+    except IntegrityError as pic:
+        logging.info(pic)
+        msg = "invalid code"
+        session.rollback()
+        raise InvalidUsage(msg, status_code=400)
     except Exception as exc:
         raise exc
     return True
@@ -205,12 +206,19 @@ def invalidate_registration_record_by_code(registration_code, invalidation_type=
 def create_registration_record(email):
     """ Method to create a registration record
     """
-    registration_code = uuid.uuid4().hex
-    reg_req = RegistrationRequest(
-        email=email,
-        registration_code=registration_code,
-        valid=True)
-    session.add(reg_req)
+    try:
+        registration_code = uuid.uuid4().hex
+        reg_req = RegistrationRequest(
+            email=email,
+            registration_code=registration_code,
+            valid=True)
+        session.add(reg_req)
+    except IntegrityError as pic:
+        logging.info(pic)
+        msg = "user already has a code"
+        session.rollback()
+        raise InvalidUsage(msg, status_code=400)
+
     return registration_code
 
 def is_valid_registration_record(registration_code):
