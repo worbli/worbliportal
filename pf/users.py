@@ -3,9 +3,11 @@ Blueprint routes for our app
 """
 # pylint can't find anything for db
 # pylint: disable=no-member
+import base64
 from datetime import datetime
 import logging
 import uuid
+from jwt import ExpiredSignatureError, InvalidTokenError
 from sqlalchemy.exc import IntegrityError
 
 from validate_email import validate_email
@@ -14,6 +16,7 @@ from flask import Blueprint, jsonify, request
 from pf.custom_error import InvalidUsage
 from pf.database import WorkerSessionmaker
 from pf.models import RegistrationRequest, User
+from pf.util.token import authorize, decode_auth_token, encode_auth_token
 
 USER_ROUTES = Blueprint('user_Routes', __name__)
 session = WorkerSessionmaker() #pylint: disable=invalid-name
@@ -120,13 +123,42 @@ def login():
         if not user.is_authenticated(req_json['password']):
             msg = "Invalid password"
             raise InvalidUsage(msg, status_code=401)
+        jwt = encode_auth_token(user.id)
     except InvalidUsage as iux:
         raise iux
     except Exception as exc:
         logging.info(type(exc))
         logging.info(str(exc))
         raise InvalidUsage(str(exc), status_code=400)
-    json_dict = {"success": True}
+    logging.info(str(jwt))
+    json_dict = {"success": True, "jwt": str(base64.urlsafe_b64encode(jwt))}
+    return jsonify(json_dict)
+
+@USER_ROUTES.route('/api/login/<token>')
+def token_verification(token):
+    """ Endpoint for the Front end to verify a token a client is holding is
+    still valid
+    """
+    try:
+        decode_auth_token(token)
+    except ExpiredSignatureError:
+        msg = "expired token"
+        raise InvalidUsage(msg, status_code=401)
+    except InvalidTokenError:
+        msg = "invalid token"
+        raise InvalidUsage(msg, status_code=403)
+    json_dict = {"tokenValid": True}
+    return jsonify(json_dict)
+
+
+@USER_ROUTES.route('/api/protected')
+@authorize
+def protected_test(user_id):
+    """ POC end point to show that
+    Auth tokens are correct
+    """
+    json_dict = {"who rules": "you do, you rule"}
+    json_dict['tokenContent'] = user_id
     return jsonify(json_dict)
 
 def create_user(params):
