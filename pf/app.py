@@ -1,7 +1,7 @@
 """ Our base app, should probably be moved into __init__ for modern
     flask standards
 """
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 from logging.config import dictConfig
 import os
@@ -199,7 +199,6 @@ def create_user(params):
         logging.info(type(exc))
         logging.info(str(exc))
         raise InvalidUsage(str(exc), status_code=400)
-
 
 
 # Todo: replace InvalidUsage with custom exception
