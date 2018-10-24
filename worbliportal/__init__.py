@@ -16,9 +16,9 @@ def create_app(extra_config_settings=None):
 
     # Load App Config settings
     # Load common settings from 'app/settings.py' file
-    app.config.from_object('settings')
+    app.config.from_object('worbliportal.settings')
     # Load local settings from 'app/local_settings.py'
-    app.config.from_object('local_settings')
+    app.config.from_object('worbliportal.local_settings')
     # Load extra config settings from 'extra_config_settings' param
     if extra_config_settings is not None:
         app.config.update(extra_config_settings)
@@ -32,9 +32,9 @@ def register_routes(app):
     Method to easily isolate route registration
     """
     # Import our routes
-    from pf.routes import ROUTE_BLUEPRINT
+    from worbliportal.routes import ROUTE_BLUEPRINT
     app.register_blueprint(ROUTE_BLUEPRINT)
-    from pf.users import USER_ROUTES as user_routes
+    from worbliportal.users import USER_ROUTES as user_routes
     app.register_blueprint(user_routes)
 
 
@@ -43,10 +43,10 @@ def initialize_extensions(app):
     Method to wrap up all extensions that require initialization
     """
     # Setup Flask-SQLAlchemy
-    from pf.database import DBH
+    from worbliportal.database import DBH
     DBH.init_app(app)
     # Setup bcrypt for use in users
-    from pf.models import BCRYPT
+    from worbliportal.models import BCRYPT
     BCRYPT.init_app(app)
 
     # Setup Flask-Migrate

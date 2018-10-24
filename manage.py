@@ -8,7 +8,7 @@ Use "python manage.py runserver --help" for additional runserver options.
 from flask_migrate import MigrateCommand
 from flask_script import Manager
 
-from pf import create_app
+from worbliportal import create_app
 
 # Setup Flask-Script with command line commands
 MANAGER = Manager(create_app)

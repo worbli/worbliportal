@@ -3,8 +3,8 @@ Behavioral tests of endpoint
 """
 
 import logging
-from pf.models import RegistrationRequest, User
-from pf.users import create_registration_record, create_user
+from worbliportal.models import RegistrationRequest, User
+from worbliportal.users import create_registration_record, create_user
 
 def test_registration_request(client, db_session):
     """

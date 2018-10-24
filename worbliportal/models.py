@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 from flask_bcrypt import Bcrypt
 
-from pf.database import DBH
+from worbliportal.database import DBH
 
 BCRYPT = Bcrypt()
 

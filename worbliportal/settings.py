@@ -4,7 +4,7 @@ Settings that are common to all environments
 import os
 
 # Application settings
-APP_NAME = "Base Flask Facotry"
+APP_NAME = "Worbli Portal"
 APP_SYSTEM_ERROR_SUBJECT_LINE = APP_NAME + " system error"
 
 # Flask settings

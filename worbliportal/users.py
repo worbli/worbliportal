@@ -13,10 +13,10 @@ from sqlalchemy.exc import IntegrityError
 from validate_email import validate_email
 
 from flask import Blueprint, jsonify, request
-from pf.custom_error import InvalidUsage
-from pf.database import WorkerSessionmaker
-from pf.models import RegistrationRequest, User
-from pf.util.token import authorize, decode_auth_token, encode_auth_token
+from worbliportal.custom_error import InvalidUsage
+from worbliportal.database import WorkerSessionmaker
+from worbliportal.models import RegistrationRequest, User
+from worbliportal.util.token import authorize, decode_auth_token, encode_auth_token
 
 USER_ROUTES = Blueprint('user_Routes', __name__)
 session = WorkerSessionmaker() #pylint: disable=invalid-name
@@ -151,7 +151,7 @@ def token_verification(token):
     return jsonify(json_dict)
 
 
-@USER_ROUTES.route('/api/protected')
+@USER_ROUTES.route('/api/protected/')
 @authorize
 def protected_test(user_id):
     """ POC end point to show that

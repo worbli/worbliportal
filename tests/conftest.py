@@ -6,8 +6,8 @@ Basic config file for running tests
 
 import logging
 import pytest
-from pf import create_app
-from pf.database import DBH
+from worbliportal import create_app
+from worbliportal.database import DBH
 
 logging.basicConfig(level=logging.DEBUG)
 

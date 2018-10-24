@@ -8,8 +8,8 @@ from functools import wraps
 import logging
 import jwt
 from flask import request
-from pf.custom_error import InvalidUsage
-from local_settings import SECRET_KEY
+from worbliportal.custom_error import InvalidUsage
+from worbliportal.local_settings import SECRET_KEY
 
 def encode_auth_token(user_id):
     """

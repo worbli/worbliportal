@@ -2,7 +2,7 @@
 Blueprint routes for our app
 """
 from flask import Blueprint, jsonify, request
-from pf.custom_error import InvalidUsage
+from worbliportal.custom_error import InvalidUsage
 
 ROUTE_BLUEPRINT = Blueprint('route_blueprint', __name__)
 

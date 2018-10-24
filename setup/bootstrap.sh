@@ -41,7 +41,7 @@ echo "Python 3 installed"
 
 # Install apache
 sudo yum install -y httpd
-sudo yum install -y mod_wsgi
+sudo yum install -y python36u-mod_wsgi
 sudo systemctl enable httpd.service
 sudo systemctl restart httpd.service
 echo "Apache 2 installed"
@@ -49,14 +49,14 @@ echo "Apache 2 installed"
 
 # setup Venv
 cd /vagrant
-python3.6 -m venv wb
-source wb/bin/activate
+python3.6 -m venv /opt/wb
+source /opt/wb/bin/activate
 pip3 install --upgrade pip
 pip3 install flask
 
 
 # Create Postgresql user
 sudo -u postgres psql -c "CREATE USER portal WITH PASSWORD 'test101';"
-sudo -u postgres createdb worbli-portal
-sudo -u postgres psql -c "grant all privileges on database worbli-portal to portal;"
+sudo -u postgres createdb worbliportal
+sudo -u postgres psql -c "grant all privileges on database worbliportal to portal;"
 

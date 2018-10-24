@@ -1,7 +1,7 @@
 """
 wsgi wrapper for uwsgi, ngninx or apache
 """
-from pf import create_app
+from worbliportal import create_app
 
 APP = create_app()
 

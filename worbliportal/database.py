@@ -5,7 +5,7 @@ database handle and possibly config
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from local_settings import SQLALCHEMY_DATABASE_URI
+from worbliportal.local_settings import SQLALCHEMY_DATABASE_URI
 
 DBH = SQLAlchemy()
 # testing fixutres expect this name
