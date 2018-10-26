@@ -23,8 +23,21 @@ PG_HBA=${CONF_DIR}pg_hba.conf
 sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" "${PG_CONF}"
 
 # we trust to all, because this is our local development VM
-echo "host     all             all             all                     trust" >> "${PG_HBA}"
+#echo "host     all             all             all                     trust" >> "${PG_HBA}"
+echo "
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
 
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             all             127.0.0.1/32           trust
+# IPv6 local connections:
+host    all             all             ::1/128                trust
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+#local   replication     postgres                                peer
+host     all             all             all                     trust
+" > "${PG_HBA}"
 sudo systemctl stop postgresql-9.6.service
 sudo systemctl start postgresql-9.6.service
 echo "Postgresql successfully installed"
@@ -74,7 +87,20 @@ pip3.6 install --upgrade pip
 cp -r /vagrant /opt/worbliportal
 sudo chown -R nginx:nginx /opt/worbliportal
 pip3.6 install -e /opt/worbliportal
+cd /opt/worbliportal
+python3.6 manage.py db init
+python3.6 manage.py db migrate
+python3.6 manage.py db upgrade
 
+
+LOCAL_SETTINGS="/opt/worbliportal/worbliportal/local_settings.py"
+touch "${LOCAL_SETTINGS}"
+SECRET_KEY=`openssl rand -base64 32`
+echo "
+SQLALCHEMY_DATABASE_URI = \"postgresql://portal:test101@localhost:5432/worbliportal\"
+FLASK_ENV = \"development\"
+SECRET_KEY = '${SECRET_KEY}'
+" >  "${LOCAL_SETTINGS}"
 
 # install and enable service
 echo "[Unit]
