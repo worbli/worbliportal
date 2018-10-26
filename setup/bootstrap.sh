@@ -2,7 +2,7 @@
 
 # Update Yum
 sudo yum -y update
-sudo yum install -y yum-util
+sudo yum install -y yum-util epel-release policycoreutils-python
 sudo yum groupinstall -y development
 
 # Install postgres
@@ -27,8 +27,8 @@ echo "host     all             all             all                     trust" >>
 
 sudo systemctl stop postgresql-9.6.service
 sudo systemctl start postgresql-9.6.service
-
 echo "Postgresql successfully installed"
+
 
 # Install Python 3.6
 sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
@@ -38,25 +38,59 @@ sudo yum install -y python36u-devel
 echo "Python 3 installed"
 
 
+# Install nginx
+sudo yum install -y nginx
 
-# Install apache
-sudo yum install -y httpd
-sudo yum install -y python36u-mod_wsgi
-sudo systemctl enable httpd.service
-sudo systemctl restart httpd.service
-echo "Apache 2 installed"
+echo "server {
+    server_name worbliportal.local;
+    listen 80;
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/opt/worbliportal/worbliportal.sock;
+    }
+}" > /etc/nginx/conf.d/worbliportal.conf
 
+sudo systemctl enable nginx
+sudo systemctl restart nginx
+echo "Nginx installed"
 
-# setup Venv
-cd /vagrant
-python3.6 -m venv /opt/wb
-source /opt/wb/bin/activate
-pip3 install --upgrade pip
-pip3 install flask
+# selinux
+sudo semanage permissive -a httpd_t 
 
-
-# Create Postgresql user
+# Initialize DB
 sudo -u postgres psql -c "CREATE USER portal WITH PASSWORD 'test101';"
 sudo -u postgres createdb worbliportal
 sudo -u postgres psql -c "grant all privileges on database worbliportal to portal;"
 
+
+# setup virtualenv
+cd /vagrant
+python3.6 -m venv /opt/worbliportal-venv
+source /opt/worbliportal-venv/bin/activate
+pip3.6 install --upgrade pip
+
+
+# copy source to deployment directory
+cp -r /vagrant /opt/worbliportal
+sudo chown -R nginx:nginx /opt/worbliportal
+pip3.6 install -e /opt/worbliportal
+
+
+# install and enable service
+echo "[Unit]
+Description=uWSGI instance to serve worbliportal
+After=network.target
+
+[Service]
+User=nginx
+Group=nginx
+WorkingDirectory=/opt/worbliportal/worbliportal
+Environment="PATH=/opt/worbliportal-venv/bin"
+ExecStart=/opt/worbliportal-venv/bin/uwsgi --ini wsgi.ini
+
+[Install]
+WantedBy=multi-user.target
+" > /etc/systemd/system/worbliportal.service
+
+sudo systemctl enable worbliportal.service
+sudo systemctl restart worbliportal.service

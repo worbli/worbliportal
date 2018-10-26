@@ -1,17 +1,13 @@
-This contains a Vagrant configuration with Postgresql, python 3.6, apache and supporting apps installed
-To run the Vagrant be sure that Vagrant and Virtualbox are installed
-you may need to also run
-`vagrant plugin install vagrant-vbguest`
+# WORBLI Portal
 
-Clone this repo
-cd to this repos directory
-`vagrant up`
+A web application for processing and claiming WORBLI sharedrops.
 
-# Not implemented yet, configuring the httpd.conf now
-# this will start a centos box with ports open at localhost:8080 to run the flask app
-# use the following until then
-`vagrant ssh`
-`cd /vagrant`
-`source wb/bin/activate`
-`python3.6 app.py`
+## Local Development
 
+1. Download Vagrant and Virtualbox.
+2. Run `vagrant up` from the root of the project.
+3. Add the vagrant VM IP address to your `/etc/hosts` mapped to the name worbliportal.local.
+```
+sudo echo "192.168.33.1    worbliportal.local" >> /etc/hosts
+```
+4. Navigate to http://worbliportal.local:9080 to hit the app.
