@@ -60,8 +60,8 @@ class User(DBH.Model):
     email = DBH.Column(DBH.String(255), unique=True, nullable=False)
     password = DBH.Column(DBH.String(255), nullable=False)
     registered_on = DBH.Column(DBH.DateTime, nullable=False)
-    location = DBH.Column(DBH.String(255), unique=True, nullable=False)
-    full_name = DBH.Column(DBH.String(255), unique=True, nullable=False)
+    location = DBH.Column(DBH.String(255), unique=False, nullable=False)
+    full_name = DBH.Column(DBH.String(255), unique=False, nullable=False)
     admin = DBH.Column(DBH.Boolean, nullable=False, default=False)
     registration_request_id = DBH.Column(
         DBH.Integer, DBH.ForeignKey('registration_request.id'),
