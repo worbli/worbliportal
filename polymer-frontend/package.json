@@ -1,0 +1,35 @@
+{
+  "name": "worbli",
+  "version": "4.0.0",
+  "description": "worbli",
+  "author": "team worbli",
+  "license": "MIT",
+  "repository": "worbli",
+  "scripts": {
+    "start": "cd build && prpl-server --root . --config polymer.json && cd ../",
+    "build": "polymer build",
+    "lint": "polymer lint",
+    "test": "polymer test",
+    "test:integration": "polymer build"
+  },
+  "dependencies": {
+    "@polymer/app-layout": "^3.0.0-pre.15",
+    "@polymer/app-route": "^3.0.0-pre.15",
+    "@polymer/iron-flex-layout": "^3.0.0-pre.15",
+    "@polymer/iron-iconset-svg": "^3.0.0-pre.15",
+    "@polymer/iron-media-query": "^3.0.0-pre.15",
+    "@polymer/iron-pages": "^3.0.0-pre.15",
+    "@polymer/iron-selector": "^3.0.0-pre.15",
+    "@polymer/paper-icon-button": "^3.0.0-pre.15",
+    "@polymer/polymer": "^3.0.0",
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "onfido-sdk-ui": "^2.8.0"
+  },
+  "devDependencies": {
+    "polymer-cli": "^1.8.0",
+    "wct-browser-legacy": "^1.0.2"
+  },
+  "engines": {
+    "node": ">=8.0"
+  }
+}
