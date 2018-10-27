@@ -6,8 +6,8 @@ A web application for processing and claiming WORBLI sharedrops.
 
 1. Download Vagrant and Virtualbox.
 2. Run `vagrant up` from the root of the project.
-3. Add the vagrant VM IP address to your `/etc/hosts` mapped to the name worbliportal.local.
+3. Add the vagrant VM IP address to your `/etc/hosts` mapped to the name worbliportal:
 ```
-sudo echo "192.168.33.1    worbliportal.local" >> /etc/hosts
+sudo echo "192.168.33.1    worbliportal" >> /etc/hosts
 ```
-4. Navigate to http://worbliportal.local:9080 to hit the app.
+4. Navigate to http://worbliportal:9080 in your browser to hit the app.
