@@ -61,17 +61,17 @@ echo "Python 3 installed"
 
 # Install nginx
 sudo yum install -y nginx
-
 echo 'server {
-    server_name backend.worbliportal.local;
+    server_name backend.worbliportal;
     listen 9000;
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/opt/worbliportal/worbliportal.sock;
     }
 }
+
 server {
-	server_name frontend.worbliportal.local;
+	server_name frontend.worbliportal worbliportal;
 	listen 80;
 	location / {
 		proxy_pass http://localhost:8080;
