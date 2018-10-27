@@ -2,7 +2,7 @@
 
 # Update Yum
 sudo yum -y update
-sudo yum install -y yum-util epel-release policycoreutils-python wget
+sudo yum install -y yum-util epel-release policycoreutils-python wget net-tools
 sudo yum groupinstall -y development
 
 # Install postgres
@@ -105,14 +105,20 @@ pip3.6 install --upgrade pip
 
 # copy source to deployment directory
 cp -r /vagrant /opt/worbliportal
+sudo su -c "useradd deploy -s /bin/bash -m -g wheel -G nginx"
+echo 'deploy   ALL=(ALL)      NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
+sudo chown -R deploy:nginx /opt/worbliportal
+sudo su - deploy
 
 # Initialize Frontend
 cd /opt/worbliportal/polymer-frontend
-sudo npm install --unsafe-perm
-sudo npm run build
+npm install --unsafe-perm
+npm run build
+sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u deploy --hp /home/deploy
 pm2 start npm -- start
+sleep 1
+pm2 save
 
-sudo chown -R nginx:nginx /opt/worbliportal
 
 # Initialize Backend
 pip3.6 install -e /opt/worbliportal
@@ -137,7 +143,7 @@ Description=uWSGI instance to serve worbliportal
 After=network.target
 
 [Service]
-User=nginx
+User=deploy
 Group=nginx
 WorkingDirectory=/opt/worbliportal/worbliportal
 Environment="PATH=/opt/worbliportal-venv/bin"
