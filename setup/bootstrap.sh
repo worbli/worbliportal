@@ -115,9 +115,7 @@ cd /opt/worbliportal/polymer-frontend
 npm install --unsafe-perm
 npm run build
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u deploy --hp /home/deploy
-pm2 start npm -- start
-sleep 1
-pm2 save
+sudo -u deploy -H sh -c "pm2 start npm -- start; sleep 2; pm2 save"
 
 
 # Initialize Backend
