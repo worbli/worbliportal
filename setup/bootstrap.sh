@@ -2,12 +2,20 @@
 
 # Update Yum
 sudo yum -y update
-sudo yum install -y yum-util epel-release policycoreutils-python
+sudo yum install -y yum-util epel-release policycoreutils-python wget
 sudo yum groupinstall -y development
 
 # Install postgres
 sudo yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 sudo yum install -y postgresql96-server postgresql96-contrib
+
+# Install nodejs
+cd /opt
+wget https://nodejs.org/download/release/v11.0.0/node-v11.0.0-linux-x64.tar.gz
+sudo tar --strip-components 1 -xzvf node-v* -C /usr
+sudo npm install polymer-cli --unsafe-perm -g
+sudo npm install prpl-server -g
+sudo npm install pm2 -g |
 
 # configuring and start db
 sudo rm -rf /var/lib/pgsql/9.6/data/
@@ -54,14 +62,26 @@ echo "Python 3 installed"
 # Install nginx
 sudo yum install -y nginx
 
-echo "server {
-    server_name worbliportal.local;
-    listen 80;
+echo 'server {
+    server_name backend.worbliportal.local;
+    listen 9000;
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/opt/worbliportal/worbliportal.sock;
     }
-}" > /etc/nginx/conf.d/worbliportal.conf
+}
+server {
+	server_name frontend.worbliportal.local;
+	listen 80;
+	location / {
+		proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+	}
+}' > /etc/nginx/conf.d/worbliportal.conf
 
 sudo systemctl enable nginx
 sudo systemctl restart nginx
@@ -85,7 +105,16 @@ pip3.6 install --upgrade pip
 
 # copy source to deployment directory
 cp -r /vagrant /opt/worbliportal
+
+# Initialize Frontend
+cd /opt/worbliportal/polymer-frontend
+sudo npm install --unsafe-perm
+sudo npm run build
+pm2 start npm -- start
+
 sudo chown -R nginx:nginx /opt/worbliportal
+
+# Initialize Backend
 pip3.6 install -e /opt/worbliportal
 cd /opt/worbliportal
 python3.6 manage.py db init
