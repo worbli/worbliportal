@@ -91,9 +91,9 @@ echo "Nginx installed"
 sudo semanage permissive -a httpd_t 
 
 # Initialize DB
-sudo -u postgres psql -c "CREATE USER portal WITH PASSWORD 'test101';"
+sudo -u postgres psql -c "CREATE USER deploy WITH PASSWORD 'test101';"
 sudo -u postgres createdb worbliportal
-sudo -u postgres psql -c "grant all privileges on database worbliportal to portal;"
+sudo -u postgres psql -c "grant all privileges on database worbliportal to deploy;"
 
 
 # setup virtualenv
@@ -125,12 +125,13 @@ python3.6 manage.py db init
 python3.6 manage.py db migrate
 python3.6 manage.py db upgrade
 
+sudo -u deploy -H sh -c "cd /opt/worbliportal/setup; /opt/worbliportal-venv/bin/python /opt/worbliportal/setup/import_snapshot.py"
 
 LOCAL_SETTINGS="/opt/worbliportal/worbliportal/local_settings.py"
 touch "${LOCAL_SETTINGS}"
 SECRET_KEY=`openssl rand -base64 32`
 echo "
-SQLALCHEMY_DATABASE_URI = \"postgresql://portal:test101@localhost:5432/worbliportal\"
+SQLALCHEMY_DATABASE_URI = \"postgresql://deploy:test101@localhost:5432/worbliportal\"
 FLASK_ENV = \"development\"
 SECRET_KEY = '${SECRET_KEY}'
 " >  "${LOCAL_SETTINGS}"

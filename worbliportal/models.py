@@ -29,7 +29,7 @@ class RegistrationRequest(DBH.Model): # pylint: disable=too-few-public-methods
     valid = DBH.Column(DBH.Boolean, nullable=False, default=False)
     spent_on = DBH.Column(DBH.DateTime, nullable=True)
     voided_on = DBH.Column(DBH.DateTime, nullable=True)
-    user = DBH.relationship("User", uselist=False, back_populates="registration_requests")
+    user = DBH.relationship("User", uselist=False, back_populates="registration_request")
 
     def __init__(self, email=None, registration_code=None, valid_until=None, valid=False):
         self.email = email
@@ -64,10 +64,11 @@ class User(DBH.Model):
     full_name = DBH.Column(DBH.String(255), unique=False, nullable=False)
     admin = DBH.Column(DBH.Boolean, nullable=False, default=False)
     registration_request_id = DBH.Column(
-        DBH.Integer, DBH.ForeignKey('registration_request.id'),
+        DBH.Integer, DBH.ForeignKey('registration_requests.id'),
         nullable=False)
     registration_request = DBH.relationship(
         "RegistrationRequest", back_populates="user")
+
 
 
     def __init__(self, email, password, admin=False):
@@ -103,7 +104,11 @@ class AirgrabValidationRequest(DBH.Model): # pylint: disable=too-few-public-meth
     security_code = DBH.Column(DBH.String(64), unique=True, nullable=False)
     completed = DBH.Column(DBH.Boolean, nullable=False, default=False)
     snapshot_balance = DBH.relationship("SnapshotBalance")
-    user = DBH.relationship("User", uselist=False, back_populates="airgrab_validation_requests")
+    snapshot_balance_id = DBH.Column(
+        DBH.Integer, DBH.ForeignKey('snapshot_balances.id'),
+        nullable=False)
+    user = DBH.relationship("User", uselist=False)
+    user_id = DBH.Column(DBH.Integer, DBH.ForeignKey('users.id'), nullable=False)
 
     def __init__(self, worbli_account_name=None, security_code=None):
         self.worbli_account_name = worbli_account_name
@@ -120,8 +125,8 @@ class SnapshotBalance(DBH.Model): # pylint: disable=too-few-public-methods
     # pylint: disable=invalid-name
     id = DBH.Column(DBH.Integer, primary_key=True, autoincrement=True)
     account_name = DBH.Column(DBH.String(12), unique=True, nullable=False)
-    owner_key = DBH.Column(DBH.String(53), nullable=False)
-    active_key = DBH.Column(DBH.String(53), nullable=False)
+    owner_key = DBH.Column(DBH.String(57), nullable=False)
+    active_key = DBH.Column(DBH.String(57), nullable=False)
     total_nostake = DBH.Column(DBH.Float, nullable=False)
     staked = DBH.Column(DBH.Float, nullable=False)
     delegated = DBH.Column(DBH.Float, nullable=False)
