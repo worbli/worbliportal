@@ -31,6 +31,7 @@ def registration_removal(registration_id):
         else:
             msg = "record not found"
             raise InvalidUsage(msg, status_code=404)
+        session.commit()
     except InvalidUsage as iux:
         raise iux
     except Exception as exc:
@@ -252,6 +253,7 @@ def create_registration_record(email):
         raise InvalidUsage(msg, status_code=400)
 
     return registration_code
+
 
 def is_valid_registration_record(registration_code):
     """ Method to validate registration record """
