@@ -13,7 +13,8 @@ myURLSetter = function(superClass) {
                     value: function() {
                         return "http://localhost:5000/";
                     }
-                }
+                },
+                jwt: String
             };
         }
     };

@@ -78,9 +78,7 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
             <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
             <iron-ajax
                     id="registrationRequest"
-                    method="POST"
                     handle-as="json"
-                    content-type="application/json"
                     on-response="handleRegister"
                     on-error="handleUserError"
                     debounce-duration="300">
@@ -101,16 +99,23 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
                 reflectToAttribute: true,
                 notify: true,
             },
+            hide: {
+                type: Boolean,
+                reflectToAttribute: true,
+                notify: true,
+            },
         };
     }
 
     _sendEmail(){
         console.log("sending email");
-        var vals = {"email": this.$.email.value};
+        let vals = {"email": this.$.email.value};
         let url = this.baseAPIurl;
         url = url + "api/registrationRequest/";
         this.$.registrationRequest.body = vals;
         this.$.registrationRequest.url = url;
+        this.$.registrationRequest.method="post";
+        this.$.registrationRequest.headers['content-type']="application/json";
         this.$.registrationRequest.generateRequest();
     }
 
@@ -118,6 +123,7 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
         var response = request.response;
         console.log("we got ");
         console.log(JSON.stringify(response));
+        this.hide = true;
         this.set('route.path', '/dashboard/email');
     }
 

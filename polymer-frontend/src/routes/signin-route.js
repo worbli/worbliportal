@@ -1,3 +1,4 @@
+/*jslint esversion: 6 */
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '../css/shared-styles.js';
 import '../components/worbli-footer.js';
