@@ -132,7 +132,11 @@ def login():
         logging.info(str(exc))
         raise InvalidUsage(str(exc), status_code=400)
     logging.info(str(jwt))
-    json_dict = {"success": True, "jwt": str(base64.urlsafe_b64encode(jwt))}
+    # This looks like noise, but otherwise we get the b'' wrappers
+    # around our jwt
+    tmp = base64.urlsafe_b64encode(jwt)
+    jtw = tmp.decode('utf-8')
+    json_dict = {"success": True, "jwt": jtw}
     return jsonify(json_dict)
 
 @USER_ROUTES.route('/api/login/<token>')
