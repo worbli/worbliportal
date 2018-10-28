@@ -31,6 +31,7 @@ def registration_removal(registration_id):
         else:
             msg = "record not found"
             raise InvalidUsage(msg, status_code=404)
+        session.commit()
     except InvalidUsage as iux:
         raise iux
     except Exception as exc:
@@ -131,7 +132,11 @@ def login():
         logging.info(str(exc))
         raise InvalidUsage(str(exc), status_code=400)
     logging.info(str(jwt))
-    json_dict = {"success": True, "jwt": str(base64.urlsafe_b64encode(jwt))}
+    # This looks like noise, but otherwise we get the b'' wrappers
+    # around our jwt
+    tmp = base64.urlsafe_b64encode(jwt)
+    jtw = tmp.decode('utf-8')
+    json_dict = {"success": True, "jwt": jtw}
     return jsonify(json_dict)
 
 @USER_ROUTES.route('/api/login/<token>')
@@ -252,6 +257,7 @@ def create_registration_record(email):
         raise InvalidUsage(msg, status_code=400)
 
     return registration_code
+
 
 def is_valid_registration_record(registration_code):
     """ Method to validate registration record """

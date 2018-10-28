@@ -11,3 +11,5 @@ A web application for processing and claiming WORBLI sharedrops.
 sudo echo "192.168.33.1    worbliportal" >> /etc/hosts
 ```
 4. Navigate to http://worbliportal:9080 in your browser to hit the app.
+5. Local building may require an update to polymer-frontend/src/mixins/worbli-urlsetter.js to reflect correct backend
+

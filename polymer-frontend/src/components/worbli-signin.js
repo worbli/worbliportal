@@ -1,7 +1,12 @@
+/*jslint esversion: 6 */
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import '@polymer/app-route/app-location.js';
+import '@polymer/iron-ajax/iron-ajax.js';
+import '@polymer/iron-localstorage/iron-localstorage.js';
+import { MyURLSetter } from "../mixins/worbli-urlsetter.js";
 import '../css/shared-styles.js';
 
-class WorbliSignin extends PolymerElement {
+class WorbliSignin extends MyURLSetter(PolymerElement) {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -73,26 +78,77 @@ class WorbliSignin extends PolymerElement {
 
       </style>
 
+        <iron-localstorage name="token-storage" value="{{jwt}}"></iron-localstorage>
+        <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+          <iron-ajax
+                id="loginHandler"
+                handle-as="json"
+                on-response="handleLogin"
+                on-error="handleUserError"
+                debounce-duration="300">
+          </iron-ajax>
             <h2>Sign In</h2>
             <p>Welcome back to WORBLI.....</p>
-            <input type="text" class="text" name="email" placeholder="Email" id="loginEmail">
+            <input type="text" class="text" name="email" placeholder="Email" id="email">
             <input type="text" class="text" name="password" placeholder="Password" id="password">
             <button class="btn-critical" on-click="_checkPassword">Sign In</button>
             <div class="center">New to Worbli? <span on-click="_join">Join WORBLI</span></div>
     `;
   }
-  static get properties() {
-    return {
-      join: {
-        type: Boolean,
-        reflectToAttribute: true,
-        notify: true,
-      },
-    };
-  }
+    static get properties() {
+        return {
+            join: {
+                type: Boolean,
+                reflectToAttribute: true,
+                notify: true,
+            },
+            hide: {
+                type: Boolean,
+                reflectToAttribute: true,
+                notify: true,
+            },
+            jwt: {
+                type: String
+            },
+        };
+    }
+    _checkPassword() {
+        let params = {};
+        params.email = this.$.email.value;
+        params.password = this.$.password.value;
+        console.log(params);
+        let url = this.baseAPIurl;
+        url = url + "api/login/";
+        this.$.loginHandler.url = url;
+        this.$.loginHandler.method="post";
+        this.$.loginHandler.headers['content-type']="application/json";
+        this.$.loginHandler.body = params;
+        this.$.loginHandler.generateRequest();
+    }
+    _join(){
+        this.join = true;
+    }
 
-_join(){
-    this.join = true;
-}
+
+    handleLogin(event, request) {
+        var response = request.response;
+        //console.log(response);
+        if (response.success == true){
+            console.log("legit response");
+            this.jwt = response.jwt;
+
+            localStorage.setItem('lsjwt', response.jwt);
+            console.log("hm?");
+            console.log(this.jwt);
+            let lsjwt = localStorage.getItem('lsjwt');
+            console.log(lsjwt);
+
+            this.hide = true;
+            this.set('route.path', '/dashboard/claim');
+        }
+    }
+    handleUserError(event, request) {
+        console.log('errored');
+    }
 
 } window.customElements.define('worbli-signin', WorbliSignin);

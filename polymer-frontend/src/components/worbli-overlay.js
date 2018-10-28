@@ -1,3 +1,4 @@
+/*jslint esversion: 6 */
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '../css/shared-styles.js';
 import './worbli-join.js';
@@ -58,13 +59,13 @@ class WorbliOverlay extends PolymerElement {
     <div class="overlay" on-click="_hide">
         <template is="dom-if" if="{{join}}">
             <div class="card" on-click="_clickCard">
-                <worbli-join join="{{join}}"></worbli-join>
+                <worbli-join join="{{join}}" hide="{{hide}}"></worbli-join>
             </div>
         </template>
 
         <template is="dom-if" if="{{!join}}">
             <div class="card" on-click="_clickCard">
-                <worbli-signin join="{{join}}"></worbli-signin>   
+                <worbli-signin join="{{join}}" hide="{{hide}}"></worbli-signin>   
             </div>
         </template>
     </div>
@@ -73,11 +74,22 @@ class WorbliOverlay extends PolymerElement {
   }
     static get properties() {
         return {
-        prop1: {
-            type: String,
-            value: 'worbli-overlay',
-        },
+            prop1: {
+                type: String,
+                value: 'worbli-overlay',
+            },
+            hide: {
+                type: Boolean,
+                observer: '_hideChange'
+            },
         };
+    }
+
+    _hideChange(old,ne) {
+        console.log("oi?");
+        if (this.hide == true) {
+            this._hide();
+        }
     }
 
     ready() {
@@ -113,35 +125,6 @@ class WorbliOverlay extends PolymerElement {
     }
     _signIn(){
         this.join = false;
-    }
-    _sendEmail(){
-        // const email = this.shadowRoot.querySelector('#email').value;
-        // fetch(`http://testnetapi.worbli.io/api/v1/send-mail/${email}`)
-        // .then((response) => {
-        //     console.log(response);
-        // })
-        // .catch((error) => {
-        //     console.log(error);
-        // })
-    }
-    _checkPassword(){
-        const email = this.shadowRoot.querySelector('#loginEmail').value;
-        const password = this.shadowRoot.querySelector('#password').value;
-        const params = {
-            headers: {"content-type":"application/json; charset=UTF-8"},
-            body: {
-                email: email, 
-                password: password
-            },
-            method: "POST"
-        }
-        fetch('http://testnetapi.worbli.io/api/v1/sign-in/', params)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
     }
 
 

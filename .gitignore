@@ -7,3 +7,5 @@ pf/__pycache__/
 pf/migrations/__pycache__/
 pf/migrations/versions/__pycache__/
 local_settings.py
+build/
+node_modules/

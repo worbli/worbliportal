@@ -1,8 +1,10 @@
+/*jslint esversion: 6 */
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { MyURLSetter } from "../../mixins/worbli-urlsetter.js";
 import '../../css/shared-styles.js';
 import '../../components/worbli-footer.js';
 
-class ProfileRoute extends PolymerElement {
+class ProfileRoute extends MyURLSetter(PolymerElement) {
   static get template() {
     return html`
           <style include="shared-styles">
@@ -184,6 +186,16 @@ class ProfileRoute extends PolymerElement {
         gtag('config', 'UA-117118714-1');
       </script>
 
+
+          <iron-ajax
+                id="registrationValidation"
+                handle-as="json"
+                on-response="handleResponse"
+                debounce-duration="300">
+          </iron-ajax>
+      
+      <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+      <app-route route="{{route}}" pattern="[[rootPath]]dashboard/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
       <div class="split">
         <div class="side">
           <div class="container">
@@ -198,14 +210,14 @@ class ProfileRoute extends PolymerElement {
           <div class="input-area">
             <div class="section-name">Profile</div>
             <div class="form-inputs">
-              <label>First Name </label>
-              <input id="first-name" name="first-name" type="text" class="text">
+              <label>Full Name </label>
+              <input id="fullName" name="fullName" type="text" class="text">
               <small class="comment">Your real name, as found on your ID.</small>
-              <label>Family Name </label>
-              <input id="first-name" name="first-name" type="text" class="text">
-              <small class="comment">Your real name, as found on your ID.</small>
+              <label>Email Address</label>
+              <input id="email" name="email" type="text" class="text">
+              <small class="comment">Your email address, as used to request registration.</small>
               <label>Country of Residence</label>
-              <select class="dropdown">
+              <select class="dropdown" id="location">
               <option value="0">Select</option>
                 <option value="4">Afghanistan</option>
                 <option value="248">Åland Islands</option>
@@ -470,14 +482,67 @@ class ProfileRoute extends PolymerElement {
             </div>
           </div>
            <div class="footer">
-           <button type="button">Save Profile</button>
+           <button type="button" on-click="_submitRegistration">Save Profile</button>
            </div>
         </div>
-
-
       </div>
-      
       <worbli-footer name="footer"></worbli-footer>
     `;
   }
+    _submitRegistration() {
+        let params = {};
+        params.fullName = this.$.fullName.value;
+        params.email = this.$.email.value;
+        params.password = this.$.password.value;
+        params.location = this.$.location.value;
+        params.registrationCode = this.subroute.path.substring(1);
+        console.log(params);
+        let url = this.baseAPIurl;
+        url = url + "api/register/";
+        this.$.registrationValidation.url = url;
+        this.$.registrationValidation.method="post";
+        this.$.registrationValidation.headers['content-type']="application/json";
+        this.$.registrationValidation.body = params;
+        this.$.registrationValidation.generateRequest();
+
+    }
+
+    _deleteRegCode (){
+        let regCode = this.subroute.path;
+        let url = this.baseAPIurl;
+        url = url + "api/registrationRequest" + regCode;
+        this.$.registrationValidation.url = url;
+        this.$.registrationValidation.method="delete";
+        this.$.registrationValidation.generateRequest();
+    }
+
+    ready()  {
+        super.ready();
+        console.log('page load');
+        console.log(this.subroute);
+        let regCode = this.subroute.path;
+        let url = this.baseAPIurl;
+        url = url + "api/registrationRequest" + regCode;
+        this.$.registrationValidation.url = url;
+        this.$.registrationValidation.method="get";
+        this.$.registrationValidation.generateRequest();
+    }
+
+    handleResponse(event, request) {
+        var response = request.response;
+        console.log(response);
+        let method = this.$.registrationValidation.method;
+        if ( method == "get"){
+            if (response.recordValid == false)  {
+                this.set('route.path', '/error');
+            }
+        } else if (method == "delete"){
+            console.log("delete method called");
+        } else if (method == "post"){
+            console.log("post method called");
+            this._deleteRegCode();
+            this.set('route.path', '/');
+        }
+
+    }
 } window.customElements.define('profile-route', ProfileRoute);

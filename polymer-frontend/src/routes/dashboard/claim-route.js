@@ -1,8 +1,11 @@
+/*jslint esversion: 6 */
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '../../css/shared-styles.js';
 import '../../components/worbli-footer.js';
+import '@polymer/iron-localstorage/iron-localstorage.js';
+import { MyURLSetter } from "../../mixins/worbli-urlsetter.js";
 
-class ClaimRoute extends PolymerElement {
+class ClaimRoute extends MyURLSetter(PolymerElement) {
   static get template() {
     return html`
           <style include="shared-styles">
@@ -164,6 +167,7 @@ class ClaimRoute extends PolymerElement {
         gtag('js', new Date());
         gtag('config', 'UA-117118714-1');
       </script>
+        <iron-localstorage name="token-storage" value="{{jwt}}"></iron-localstorage>
 
       <div class="split">
         <div class="side">
@@ -253,4 +257,20 @@ class ClaimRoute extends PolymerElement {
       <worbli-footer name="footer"></worbli-footer>
     `;
   }
+    static get properties() {
+        return {
+            jwt: {
+                type: String
+            },
+        };
+    }
+    ready() {
+        super.ready();
+        console.log('in claim');
+        let lsjwt = localStorage.getItem('lsjwt');
+        this.jwt = lsjwt;
+        console.log(lsjwt);
+        console.log(this.jwt);
+    }
+
 } window.customElements.define('claim-route', ClaimRoute);
