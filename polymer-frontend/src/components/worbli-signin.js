@@ -1,7 +1,9 @@
+/*jslint esversion: 6 */
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import { MyURLSetter } from "../mixins/worbli-urlsetter.js";
 import '../css/shared-styles.js';
 
-class WorbliSignin extends PolymerElement {
+class WorbliSignin extends MyURLSetter(PolymerElement) {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -73,9 +75,15 @@ class WorbliSignin extends PolymerElement {
 
       </style>
 
+          <iron-ajax
+                id="loginHandler"
+                handle-as="json"
+                on-response="handleResponse"
+                debounce-duration="300">
+          </iron-ajax>
             <h2>Sign In</h2>
             <p>Welcome back to WORBLI.....</p>
-            <input type="text" class="text" name="email" placeholder="Email" id="loginEmail">
+            <input type="text" class="text" name="email" placeholder="Email" id="email">
             <input type="text" class="text" name="password" placeholder="Password" id="password">
             <button class="btn-critical" on-click="_checkPassword">Sign In</button>
             <div class="center">New to Worbli? <span on-click="_join">Join WORBLI</span></div>
@@ -90,9 +98,25 @@ class WorbliSignin extends PolymerElement {
       },
     };
   }
-
-_join(){
-    this.join = true;
-}
+  _checkPassword() {
+        let params = {};
+        params.email = this.$.email.value;
+        params.password = this.$.password.value;
+        console.log(params);
+        let url = this.baseAPIurl;
+        url = url + "api/login/";
+        this.$.loginHandler.url = url;
+        this.$.loginHandler.method="post";
+        this.$.loginHandler.headers['content-type']="application/json";
+        this.$.loginHandler.body = params;
+        this.$.loginHandler.generateRequest();
+  }
+  handleResponse(event, request) {
+      var response = request.response;
+      console.log(response);
+  }
+    _join(){
+        this.join = true;
+    }
 
 } window.customElements.define('worbli-signin', WorbliSignin);

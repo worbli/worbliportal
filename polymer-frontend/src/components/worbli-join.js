@@ -1,8 +1,11 @@
+/*jslint esversion: 6 */
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/app-route/app-location.js';
+import '@polymer/iron-ajax/iron-ajax.js';
 import '../css/shared-styles.js';
+import { MyURLSetter } from "../mixins/worbli-urlsetter.js";
 
-class WorbliJoin extends PolymerElement {
+class WorbliJoin extends MyURLSetter(PolymerElement) {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -73,6 +76,15 @@ class WorbliJoin extends PolymerElement {
 
       </style>
             <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+            <iron-ajax
+                    id="registrationRequest"
+                    method="POST"
+                    handle-as="json"
+                    content-type="application/json"
+                    on-response="handleRegister"
+                    on-error="handleUserError"
+                    debounce-duration="300">
+            </iron-ajax>
             <h2>Join WORBLI</h2>
             <p>WORBLI is the place to access smarter financial services</p>
             <input type="text" class="text" placeholder="Email Address" id="email">
@@ -82,21 +94,39 @@ class WorbliJoin extends PolymerElement {
             <div class="center">Already on WORBLI? <span on-click="_signIn">Log In</span></div>
     `;
   }
-  static get properties() {
-    return {
-        join: {
-            type: Boolean,
-            reflectToAttribute: true,
-            notify: true,
-        },
-    };
-  }
+    static get properties() {
+        return {
+            join: {
+                type: Boolean,
+                reflectToAttribute: true,
+                notify: true,
+            },
+        };
+    }
 
-_sendEmail(){
-    this.set('route.path', '/dashboard/email');
-}
-_signIn(){
-    this.join = false;
-}
+    _sendEmail(){
+        console.log("sending email");
+        var vals = {"email": this.$.email.value};
+        let url = this.baseAPIurl;
+        url = url + "api/registrationRequest/";
+        this.$.registrationRequest.body = vals;
+        this.$.registrationRequest.url = url;
+        this.$.registrationRequest.generateRequest();
+    }
+
+    handleRegister(event, request) {
+        var response = request.response;
+        console.log("we got ");
+        console.log(JSON.stringify(response));
+        this.set('route.path', '/dashboard/email');
+    }
+
+    handleUserError(event, request) {
+        console.log('errored');
+    }
+
+    _signIn(){
+        this.join = false;
+    }
 
 } window.customElements.define('worbli-join', WorbliJoin);

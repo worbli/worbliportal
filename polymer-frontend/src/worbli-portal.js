@@ -1,3 +1,4 @@
+/*jslint esversion: 6 */
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';

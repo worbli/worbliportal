@@ -1,3 +1,4 @@
+/*jslint esversion: 6 */
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';
 import '@polymer/app-route/app-location.js';
@@ -24,7 +25,7 @@ class DasboardRoute extends PolymerElement {
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
       <app-route route="{{route}}" pattern="[[rootPath]]dashboard/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
       <iron-pages selected="[[page]]" attr-for-selected="name" role="main" class="center">
-        <profile-route name="profile"></profile-route>
+        <profile-route name="profile" route="{{subroute}}"></profile-route>
         <verify-route name="verify"></verify-route>
         <claim-route name="claim"></claim-route>
         <!-- TODO: Delete email route once implemented -->
@@ -50,12 +51,11 @@ class DasboardRoute extends PolymerElement {
 
   static get observers() {
     return [
-      '_routePageChanged(routeData.page)'
+      '_routePageChanged(routeData.page, subroute)'
     ];
   }
 
-  _routePageChanged(page) {
-    console.log(page);
+  _routePageChanged(page, subroute) {
     if (!page) {
       this.page = 'email';
     } else if (['claim', 'email', 'profile', 'verify'].indexOf(page) !== -1) {
