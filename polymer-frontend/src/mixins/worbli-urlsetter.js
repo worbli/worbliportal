@@ -14,7 +14,13 @@ myURLSetter = function(superClass) {
                         return "http://backend.worbliportal:9000";
                     }
                 },
-                jwt: String
+				jwt: String,
+				onfidoAPIToken:{
+					type: String,
+					value : function(){
+						return "token=test_cYzbqYVlmYixWQN0V6CYD3AOlIYdeZk9"
+					}
+				}
             };
         }
     };

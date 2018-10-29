@@ -1,5 +1,5 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-// import Onfido from 'onfido-sdk-ui';
+//import Onfido from 'onfido-sdk-ui';
 import '../css/shared-styles.js';
 
 class WorbliOnfido extends PolymerElement {
@@ -61,32 +61,67 @@ class WorbliOnfido extends PolymerElement {
       complete: {
         type: Boolean,
         value: false,
-      }
+	  },
+	  applicantId : {
+		  type : String
+	  },
+	  SDKJWT : {
+		type : String
+	  }
     };
   }
 
+  _createApplicant(){
+	const params = {
+        headers: {
+			"Authorization" : "Token token=test_PWluw5ldKP3nucC59suthsqdHE0vWs2M",
+			"Content-Type":"application/json"
+		},
+        body: {
+			"first_name": "Amit",
+			"last_name" : "Rathi"
+		},
+		processData:false,
+        method: "POST"
+	}
+	
+	fetch('https://api.onfido.com/v2/applicants', params)
+	.then((response) => {
+		this.applicantId = response.id
+	})
+	.catch((error) => {
+        console.log(error);
+    })
+  }
+
   _doOnfido(){
-    const firstName = this.firstName;
-    const lastName = this.lastname;
     const params = {
-        headers: {"content-type":"application/json; charset=UTF-8"},
-        body: {firstName,lastName},
+        headers: {
+			"Authorization" : "Token token=test_PWluw5ldKP3nucC59suthsqdHE0vWs2M",
+			"Content-Type":"application/x-www-form-urlencoded"
+		},
+        body: {
+			"applicant_id": this.applicantId,
+			"referrer" : "http://127.0.0.1:8081/dashboard/verify"
+		},
+		processData:false,
         method: "POST"
     }
-    fetch('http://yourAPI.com', params)
-    .then((jwt) => {
-      this.jwt = jwt
-      Onfido.init({
-        token: this.jwt,
-        useModal: this.modal,
-        buttonId: 'onfido-button',
-        containerId: 'onfido-mount',
-        language: this.language,
-        onComplete: (data) => {
-          this._sendDataToAPI(data);
-        }
-        // Handle if it rejects the user here
-      })
+    fetch('https://api.onfido.com/v2/sdk_token', params)
+    .then((response) => {
+		console.log(response);
+		this.SDKJWT = response.token
+		Onfido.init({
+			token: this.SDKJWT,
+			useModal: this.modal,
+			buttonId: 'onfido-button',
+			containerId: 'onfido-mount',
+			language: this.language,
+			onComplete: (data) => {
+			this._sendDataToAPI(data);
+			}
+			// Handle if it rejects the user here
+		})
     })
     .catch((error) => {
         console.log(error);
