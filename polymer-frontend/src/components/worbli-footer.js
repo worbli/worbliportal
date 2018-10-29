@@ -72,7 +72,7 @@ class WorbliFooter extends PolymerElement {
         
         </div>
         <div><a href="mailto:hello@worbli.io">hello@worbli.io</a></div>
-        <div>5865 Neal Ave N Ste 175</br> Stillwater, MN 55082</div>
+        <div>5865 Neal Ave N Ste 175</br> Stillwater, MN 55082, United States</div>
         <div class="social-links">
             <ul>
                 <li><a href="https://www.facebook.com/worbli" target=”_blank”></a></li>
