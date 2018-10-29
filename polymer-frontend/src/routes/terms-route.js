@@ -89,7 +89,6 @@ class TermsRoute extends PolymerElement {
           <li><strong>dApp Developer</strong> – we view the WORBLI Network as the world's leading platform to develop distributed applications (dApps) that require a robust compliance framework. It is very important to us that we attract and support the world's best dApps developers. We have therefore built a clear rules-based framework to support and nurture developers and ensure they are aligned with our compliance-focused culture. As such, we ask that you agree to our <strong>Network Terms</strong>, as a user of the WORBLI Network, but also our <strong>Developer Terms</strong> which are set out below as a schedule to the <strong>Network Terms</strong>.</li>
       </ul>
       <br/>
-      <p>Additionally, we are executing a Sharedrop of WORBLI tokens to all holders of EOS tokens as of the snapshot we have taken on September 7th, 23:59 UTC. Please check our <strong>Sharedrop Terms </strong>for more information on our Sharedrop.</p>
       <br/><p>In time, we may adapt and update aspects of the <strong>Platform Terms, Network Terms, Developer Terms</strong> and/or our <strong>Privacy Policy</strong> in order to deal with changes to our operations or as required by law. These changes will always be posted to the WORBLI Portal and we will do our best to notify you of the same. Rest assured, no changes will be applicable to you until they have been made available on the WORBLI Portal.</p>
         </div>
         <div class="side">

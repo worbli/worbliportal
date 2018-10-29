@@ -50,6 +50,9 @@ class WorbliProducers extends PolymerElement {
             <div class="bp"><img width="60px" src="./images/bp-logos/blue/gravity-pool.png"></div>
             <div class="bp"><img width="60px" src="./images/bp-logos/blue/hkeos.png"></div>
             <div class="bp"><img width="60px" src="./images/bp-logos/blue/infinity-bloc.png"></div>
+            <div class="bp"><img width="60px" src="./images/bp-logos/blue/chain-rift.png"></div>
+            <div class="bp"><img width="60px" src="./images/bp-logos/blue/eos-gravity-pool.png"></div>
+            <div class="bp"><img width="60px" src="./images/bp-logos/blue/octagon-labs.png"></div>
         </div>
     </div>
 </div>
