@@ -1,6 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '../css/shared-styles.js';
-import '../libraries/onfido.min.js';
+// import {Onfido} from '../libraries/onfido.min.js';
 
 class WorbliOnfido extends PolymerElement {
   static get template() {
@@ -20,6 +20,11 @@ class WorbliOnfido extends PolymerElement {
           height: 300px;
         }
       </style>
+      
+      <script>
+      console.log("Onfido");
+      console.log(Onfido);
+      </script>
       <div class="center">
       <img src="./images/dashboard-icons/print.svg" class="print">
       <p>Verify your identity to get an on-chain Worbli account and redeem your Share Drop</p>
@@ -32,7 +37,7 @@ class WorbliOnfido extends PolymerElement {
     return {
       init: {
         type: String,
-        observer: '_doOnfido',
+  
       },
       modal: {
         type: Boolean,
@@ -69,6 +74,14 @@ class WorbliOnfido extends PolymerElement {
 		type : String
 	  }
     };
+  }
+
+
+  ready() {
+    super.ready();
+    console.log("Onfido");
+    console.log(Onfido);
+    console.log("Onfido");
   }
 
   _createApplicant(){
