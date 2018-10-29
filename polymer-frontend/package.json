@@ -28,7 +28,7 @@
     "onfido-sdk-ui": "^2.8.0"
   },
   "devDependencies": {
-    "polymer-cli": "^1.8.0",
+    "polymer-cli": "^1.8.1",
     "wct-browser-legacy": "^1.0.2"
   },
   "engines": {
