@@ -13,13 +13,32 @@ from sqlalchemy.exc import IntegrityError
 from validate_email import validate_email
 
 from flask import Blueprint, jsonify, request
+from flask_mail import Message
 from worbliportal.custom_error import InvalidUsage
 from worbliportal.database import WorkerSessionmaker
+from worbliportal.local_settings import FLASK_ENV
+from worbliportal.mail import MAIL
 from worbliportal.models import RegistrationRequest, User
 from worbliportal.util.token import authorize, decode_auth_token, encode_auth_token
 
 USER_ROUTES = Blueprint('user_Routes', __name__)
 session = WorkerSessionmaker() #pylint: disable=invalid-name
+
+@USER_ROUTES.route('/sm123tes654/')
+def test_mail():
+    """
+    testing mail locally, will disable
+    """
+    msg = Message('Hello', sender='noreply@eosdetroit.com', \
+        recipients=['charlie.e.dumont@gmail.com'])
+    msg.body = "Hello Flask message sent from Flask-Mail"
+    logging.info(msg)
+    #MAIL.connect()
+    MAIL.send(msg)
+    json_dict = {"sent": True}
+    return jsonify(json_dict)
+
+
 
 @USER_ROUTES.route('/api/registrationRequest/<registration_id>', methods=['DELETE'])
 def registration_removal(registration_id):
@@ -54,7 +73,6 @@ def registration_validation(registration_id):
     return jsonify(json_dict)
 
 
-# Todo: Replace returning registration with email send
 @USER_ROUTES.route('/api/registrationRequest/', methods=['POST'])
 def registration_request():
     """ First step in registration is requesting a registration key be
@@ -79,8 +97,20 @@ def registration_request():
         raise InvalidUsage(str(exc), status_code=400)
     finally:
         session.close()
-    json_dict = {"registration_code" : registration_code}
+
+    if FLASK_ENV in ("development", "testing"):
+        json_dict = {"success" : True, "registration_code" : registration_code}
+    else:
+        json_dict = {"success": True}
+        send_email(registration_code=registration_code, email=email)
     return jsonify(json_dict)
+
+
+def send_email(registration_code=None, email=None):
+    """
+    controller for sending email
+    """
+    logging.info(registration_code, email)
 
 
 @USER_ROUTES.route('/api/register/', methods=['POST'])
