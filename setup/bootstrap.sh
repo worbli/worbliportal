@@ -61,27 +61,30 @@ echo "Python 3 installed"
 
 # Install nginx
 sudo yum install -y nginx
-echo 'server {
-    server_name backend.worbliportal;
-    listen 9000;
-    location / {
-        include uwsgi_params;
-        uwsgi_pass unix:/opt/worbliportal/worbliportal.sock;
-    }
-}
 
-server {
-	server_name frontend.worbliportal worbliportal;
-	listen 80;
-	location / {
-		proxy_pass http://localhost:8080;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-	}
-}' > /etc/nginx/conf.d/worbliportal.conf
+if [ ! -f /etc/nginx/conf.d/worbliportal.conf ]; then
+    echo 'server {
+        server_name backend.worbliportal;
+        listen 9000;
+        location / {
+            include uwsgi_params;
+            uwsgi_pass unix:/opt/worbliportal/worbliportal.sock;
+        }
+    }
+
+    server {
+    	server_name frontend.worbliportal worbliportal;
+    	listen 80;
+    	location / {
+    		proxy_pass http://localhost:8080;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+    	}
+    }' > /etc/nginx/conf.d/worbliportal.conf
+fi
 
 sudo systemctl enable nginx
 sudo systemctl restart nginx
@@ -117,14 +120,16 @@ sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -
 sudo -u deploy -H sh -c "pm2 start npm -- start; sleep 2; pm2 save"
 
 
-LOCAL_SETTINGS="/opt/worbliportal/worbliportal/local_settings.py"
-touch "${LOCAL_SETTINGS}"
-SECRET_KEY=`openssl rand -base64 32`
-echo "
-SQLALCHEMY_DATABASE_URI = \"postgresql://deploy:test101@localhost:5432/worbliportal\"
-FLASK_ENV = \"development\"
-SECRET_KEY = '${SECRET_KEY}'
-" >  "${LOCAL_SETTINGS}"
+if [ ! -f /opt/worbliportal/worbliportal/local_settings.py ]; then
+    LOCAL_SETTINGS="/opt/worbliportal/worbliportal/local_settings.py"
+    touch "${LOCAL_SETTINGS}"
+    SECRET_KEY=`openssl rand -base64 32`
+    echo "
+    SQLALCHEMY_DATABASE_URI = \"postgresql://deploy:test101@localhost:5432/worbliportal\"
+    FLASK_ENV = \"development\"
+    SECRET_KEY = '${SECRET_KEY}'
+    " >  "${LOCAL_SETTINGS}"
+fi
 
 # Initialize Backend
 pip3.6 install -e /opt/worbliportal
