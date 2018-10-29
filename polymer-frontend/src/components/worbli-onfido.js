@@ -1,6 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-//import Onfido from 'onfido-sdk-ui';
 import '../css/shared-styles.js';
+import '../libraries/onfido.min.js';
 
 class WorbliOnfido extends PolymerElement {
   static get template() {
