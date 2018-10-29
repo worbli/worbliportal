@@ -108,7 +108,6 @@ cp -r /vagrant /opt/worbliportal
 sudo su -c "useradd deploy -s /bin/bash -m -g wheel -G nginx"
 echo 'deploy   ALL=(ALL)      NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 sudo chown -R deploy:nginx /opt/worbliportal
-sudo su - deploy
 
 # Initialize Frontend
 cd /opt/worbliportal/polymer-frontend
@@ -117,6 +116,15 @@ npm run build
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u deploy --hp /home/deploy
 sudo -u deploy -H sh -c "pm2 start npm -- start; sleep 2; pm2 save"
 
+
+LOCAL_SETTINGS="/opt/worbliportal/worbliportal/local_settings.py"
+touch "${LOCAL_SETTINGS}"
+SECRET_KEY=`openssl rand -base64 32`
+echo "
+SQLALCHEMY_DATABASE_URI = \"postgresql://deploy:test101@localhost:5432/worbliportal\"
+FLASK_ENV = \"development\"
+SECRET_KEY = '${SECRET_KEY}'
+" >  "${LOCAL_SETTINGS}"
 
 # Initialize Backend
 pip3.6 install -e /opt/worbliportal
@@ -127,14 +135,6 @@ python3.6 manage.py db upgrade
 
 sudo -u deploy -H sh -c "cd /opt/worbliportal/setup; /opt/worbliportal-venv/bin/python /opt/worbliportal/setup/import_snapshot.py"
 
-LOCAL_SETTINGS="/opt/worbliportal/worbliportal/local_settings.py"
-touch "${LOCAL_SETTINGS}"
-SECRET_KEY=`openssl rand -base64 32`
-echo "
-SQLALCHEMY_DATABASE_URI = \"postgresql://deploy:test101@localhost:5432/worbliportal\"
-FLASK_ENV = \"development\"
-SECRET_KEY = '${SECRET_KEY}'
-" >  "${LOCAL_SETTINGS}"
 
 # install and enable service
 echo "[Unit]
