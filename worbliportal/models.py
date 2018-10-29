@@ -17,7 +17,7 @@ class RegistrationRequest(DBH.Model): # pylint: disable=too-few-public-methods
     """ Table for storing registration requests
     """
 
-    __tablename__ = "registration_request"
+    __tablename__ = "registration_requests"
 
     # required name for postgres
     # pylint: disable=invalid-name
@@ -64,10 +64,11 @@ class User(DBH.Model):
     full_name = DBH.Column(DBH.String(255), unique=False, nullable=False)
     admin = DBH.Column(DBH.Boolean, nullable=False, default=False)
     registration_request_id = DBH.Column(
-        DBH.Integer, DBH.ForeignKey('registration_request.id'),
+        DBH.Integer, DBH.ForeignKey('registration_requests.id'),
         nullable=False)
     registration_request = DBH.relationship(
         "RegistrationRequest", back_populates="user")
+
 
 
     def __init__(self, email, password, admin=False):
@@ -89,3 +90,57 @@ class User(DBH.Model):
 
     def __repr__(self):
         return '<User {0}>'.format(self.email)
+
+
+class AirgrabValidationRequest(DBH.Model): # pylint: disable=too-few-public-methods
+    """ Table for storing airgrab validation requests.
+    """
+
+    __tablename__ = "airgrab_validation_requests"
+    # required name for postgres
+    # pylint: disable=invalid-name
+    id = DBH.Column(DBH.Integer, primary_key=True, autoincrement=True)
+    worbli_account_name = DBH.Column(DBH.String(12), unique=True, nullable=False)
+    security_code = DBH.Column(DBH.String(64), unique=True, nullable=False)
+    completed = DBH.Column(DBH.Boolean, nullable=False, default=False)
+    snapshot_balance = DBH.relationship("SnapshotBalance")
+    snapshot_balance_id = DBH.Column(
+        DBH.Integer, DBH.ForeignKey('snapshot_balances.id'),
+        nullable=False)
+    user = DBH.relationship("User", uselist=False)
+    user_id = DBH.Column(DBH.Integer, DBH.ForeignKey('users.id'), nullable=False)
+
+    def __init__(self, worbli_account_name=None, security_code=None):
+        self.worbli_account_name = worbli_account_name
+        self.security_code = security_code
+
+
+
+class SnapshotBalance(DBH.Model): # pylint: disable=too-few-public-methods
+    """ Table for storing EOS snapshot balances.
+    """
+
+    __tablename__ = "snapshot_balances"
+    # required name for postgres
+    # pylint: disable=invalid-name
+    id = DBH.Column(DBH.Integer, primary_key=True, autoincrement=True)
+    account_name = DBH.Column(DBH.String(12), unique=True, nullable=False)
+    owner_key = DBH.Column(DBH.String(57), nullable=False)
+    active_key = DBH.Column(DBH.String(57), nullable=False)
+    total_nostake = DBH.Column(DBH.Float, nullable=False)
+    staked = DBH.Column(DBH.Float, nullable=False)
+    delegated = DBH.Column(DBH.Float, nullable=False)
+    total =DBH.Column(DBH.Float, nullable=False)
+    creation_time = DBH.Column(DBH.DateTime, nullable=False)
+
+    def __init__(self, account_name=None, owner_key=None, active_key=None, total_nostake=None, 
+            staked=None, delegated=None, total=None, creation_time=None):
+        self.account_name = account_name
+        self.owner_key = owner_key
+        self.active_key = active_key
+        self.total_nostake = total_nostake
+        self.staked = staked
+        self.delegated = delegated
+        self.total = total
+        self.creation_time = creation_time
+
