@@ -1,8 +1,14 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '../css/shared-styles.js';
-import '../libraries/onfido.min.js';
+//import '../libraries/onfido.min.js';
 
 class WorbliOnfido extends PolymerElement {
+	ready(){
+		super.ready();
+		setTimeout(() => { 
+			this.onfidoTest() 
+		}, 8000);
+	}
   static get template() {
     return html`
       <style include="shared-styles">
@@ -19,12 +25,13 @@ class WorbliOnfido extends PolymerElement {
           width: 300px;
           height: 300px;
         }
-      </style>
-      <div class="center">
+	  </style>
+	  <div id="onfido-mount"></div>
+	  <button id='onfido-button' disabled>[[buttonText]]</button>
+
+	  <div class="center">
       <img src="./images/dashboard-icons/print.svg" class="print">
       <p>Verify your identity to get an on-chain Worbli account and redeem your Share Drop</p>
-        <button id='onfido-button' disabled>[[buttonText]]</button>
-        <div id='onfido-mount'></div>
       </div>
     `;
   }
@@ -71,6 +78,36 @@ class WorbliOnfido extends PolymerElement {
     };
   }
 
+  onfidoTest(){
+	  console.log("start after")
+	  	var url = "https://token-factory.onfido.com/sdk_token"
+		var request = new XMLHttpRequest()
+		request.open('GET', url, true)
+		request.onload = function() {
+			if (request.status >= 200 && request.status < 400) {
+				var data = JSON.parse(request.responseText)
+
+				Onfido.init({
+					useModal: false,
+					token: data.message,
+					buttonId: 'onfido-button',
+					containerId: 'onfido-mount',
+					onComplete: function(data) {
+						// callback for when everything is complete
+						console.log("everything is complete")
+					},
+					steps: [
+						'welcome',
+						'document',
+						'face',
+						'complete'
+					]
+				});
+			}
+		}
+		request.send();
+  }
+
   _createApplicant(){
 	const params = {
         headers: {
@@ -106,19 +143,20 @@ class WorbliOnfido extends PolymerElement {
 		},
 		processData:false,
         method: "POST"
-    }
+	}
     fetch('https://api.onfido.com/v2/sdk_token', params)
     .then((response) => {
 		console.log(response);
-		this.SDKJWT = response.token
+		this.SDKJWT = response.token;
 		Onfido.init({
 			token: this.SDKJWT,
-			useModal: this.modal,
+			useModal: false,
 			buttonId: 'onfido-button',
 			containerId: 'onfido-mount',
 			language: this.language,
 			onComplete: (data) => {
-			this._sendDataToAPI(data);
+				console.log(data);
+				//this._sendDataToAPI(data);
 			}
 			// Handle if it rejects the user here
 		})
@@ -129,18 +167,18 @@ class WorbliOnfido extends PolymerElement {
   }
 
   _sendDataToAPI(data){
-    const params = {
-      headers: {"content-type":"application/json; charset=UTF-8"},
-      body: {data},
-      method: "POST"
-  }
-  fetch('http://yourAPI.com', params)
-  .then((done) => {
-    this.complete = true;
-  })
-  .catch((error) => {
-      console.log(error);
-  })
+		const params = {
+		headers: {"content-type":"application/json; charset=UTF-8"},
+		body: {data},
+		method: "POST"
+	}
+	fetch('http://yourAPI.com', params)
+	.then((done) => {
+		this.complete = true;
+	})
+	.catch((error) => {
+		console.log(error);
+	})
   }
 
 
