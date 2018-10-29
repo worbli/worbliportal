@@ -79,23 +79,39 @@ class RoadmapRoute extends PolymerElement {
       </script>
 
       <div class="split">
-        <div class="main">
-          <h1>Roadmap</h1>
-          <p>Help launch EOS main net in preparation for starting WORBLI’s Network</p>
+      <div class="main">
+        <h1>Roadmap</h1>
+          <p>Help launch EOS main net in preparation for starting WORBLI's Network</p>
           <h2>dApps</h2>
           <worbli-roadmap title="AML/KYC verification to WORBLI user accounts" status="complete"></worbli-roadmap>
           <worbli-roadmap title="Facilitate the launch of dApps on WORBLI" status="inprogress"></worbli-roadmap>
-          <worbli-roadmap title="Gamma Bank MVP" status="testing"></worbli-roadmap>
-          <worbli-roadmap title="Test Gamma Bank MVP" status="testing"></worbli-roadmap>
-          <worbli-roadmap title="Alternative Product Development on WORBLI. Insurance, DEX’s and more are in the pipeline to be developed." status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="dApp 1 - Recruit Worbli Block Producers to Lead Development" status="complete"></worbli-roadmap>
+          <worbli-roadmap title="dApp 2 - Recruit Worbli Block Producers to Lead Development" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="dApp 1 - Specification for Development" status="complete"></worbli-roadmap>
+          <worbli-roadmap title="dApp 2 - Specification for Development" status="complete"></worbli-roadmap>
+          <worbli-roadmap title="Portal - Launch and Integrate Block Explorer" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="Portal - Reduce and refine the sign up process for new users" status="testing"></worbli-roadmap>
+          <worbli-roadmap title="Portal - Launch WBI bounty for additional customer infomation" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="Portal - Dashboard News Feed" status="testing"></worbli-roadmap>
+          <worbli-roadmap title="Portal - Community chat box" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="Portal - Launch Version 2" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="Portal - Launch Friend get Friend campaign" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="WORBLI Wallet - Custodian Multi Crypto Wallet" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="WORBLI Toolkit" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="WORBLI Network Monitor" status="complete"></worbli-roadmap>
+          <worbli-roadmap title="WORBLI Blockexplorer" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="Interblockchain - Integrate Payment Gateway, Multi Crypto" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="Gamma Bank MVP" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="Test Gamma Bank MVP" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="Alternative Product Development on WORBLI. Insurance, DEX's and more in the pipeline are to be developed." status="inprogress"></worbli-roadmap>
           <worbli-roadmap title="Hire world class executive team to develop and launch Gamma Bank" status="inprogress"></worbli-roadmap>
           <worbli-roadmap title="Launch Gamma Bank in global markets (Africa, Latin America, Australia and Europe)" status="inprogress"></worbli-roadmap>
           <h2>Network</h2>
-          <worbli-roadmap title="Help launch EOS main net in preparation for starting WORBLI’s Network" status="complete"></worbli-roadmap>
+          <worbli-roadmap title="Help launch EOS main net in preparation for starting WORBLI's Network" status="complete"></worbli-roadmap>
           <worbli-roadmap title="Confirm Block Producers & Block Producer Back Ups" status="complete"></worbli-roadmap>
           <worbli-roadmap title="Conduct WORBLI Network AirGrab" status="complete"></worbli-roadmap>
           <worbli-roadmap title="Launch WORBLI, the EOS Friendly (soft) Fork" status="complete"></worbli-roadmap>
-          <worbli-roadmap title="List WORBLI’s (WBI) Token on multiple digital asset exchanges" status="inprogress"></worbli-roadmap>
+          <worbli-roadmap title="List WORBLI's (WBI) Token on multiple digital asset exchanges" status="inprogress"></worbli-roadmap>
           <worbli-roadmap title="Begin development and support of additional applications to be developed and deployed on WORBLI" status="inprogress"></worbli-roadmap>
           <worbli-roadmap title="Develop long-term strategic, financial and marketing plans" status="inprogress"></worbli-roadmap>
           <worbli-roadmap title="Commence Network Launch and AirGrab marketing and content campaigns" status="testing"></worbli-roadmap>
