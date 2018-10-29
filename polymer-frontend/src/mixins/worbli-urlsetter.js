@@ -11,7 +11,7 @@ myURLSetter = function(superClass) {
                 baseAPIurl: {
                     type: String,
                     value: function() {
-                        return "http://localhost:5000/";
+                        return "http://backend.worbliportal:9000";
                     }
                 },
                 jwt: String
