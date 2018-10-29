@@ -5,9 +5,7 @@ import '../css/shared-styles.js';
 class WorbliOnfido extends PolymerElement {
 	ready(){
 		super.ready();
-		setTimeout(() => { 
-			this.onfidoTest() 
-		}, 8000);
+		this.onfidoTest()
 	}
   static get template() {
     return html`
@@ -26,8 +24,6 @@ class WorbliOnfido extends PolymerElement {
           height: 300px;
         }
 	  </style>
-	  <div id="onfido-mount"></div>
-	  <button id='onfido-button' disabled>[[buttonText]]</button>
 
 	  <div class="center">
       <img src="./images/dashboard-icons/print.svg" class="print">
