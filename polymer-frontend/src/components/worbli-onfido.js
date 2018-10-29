@@ -78,8 +78,8 @@ class WorbliOnfido extends PolymerElement {
 			"Content-Type":"application/json"
 		},
         body: {
-			"first_name": "Amit",
-			"last_name" : "Rathi"
+			"first_name": this.firstName,
+			"last_name" : this.lastName
 		},
 		processData:false,
         method: "POST"
