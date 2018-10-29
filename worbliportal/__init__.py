@@ -102,7 +102,7 @@ def init_email_error_handler(app):
         subject=subject,  # Subject line
         credentials=(username, password),  # Credentials
         secure=secure,
-    )
+        )
     mail_handler.setLevel(logging.ERROR)
     app.logger.addHandler(mail_handler)
 
@@ -110,16 +110,21 @@ def init_email_error_handler(app):
 
 LOGGINGCONFIG = {
     'version': 1,
-    'formatters': {'default': {
-        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
-    }},
-    'handlers': {'wsgi': {
-        'class': 'logging.StreamHandler',
-        'stream': 'ext://flask.logging.wsgi_errors_stream',
-        'formatter': 'default'
-    }},
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+            }
+        },
+    'handlers': {
+        'wsgi': {
+            'class': 'logging.StreamHandler',
+            'stream': 'ext://flask.logging.wsgi_errors_stream',
+            'formatter': 'default'
+            },
+        },
     'root': {
         'level': 'INFO',
         'handlers': ['wsgi']
-    }
+        }
 }
