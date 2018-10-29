@@ -172,8 +172,7 @@ class VerifyRoute extends PolymerElement {
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'UA-117118714-1');
-      </script>
-
+	  </script>
       <div class="split">
         <div class="side">
           <div class="container">

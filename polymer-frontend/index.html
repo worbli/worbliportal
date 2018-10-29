@@ -26,7 +26,8 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://portal-test.worbli.io/">
     <meta property="og:image" content="https://portal-test.worbli.io/esm-bundled/images/referrer.png">
-    <meta property="og:description" content="Blockchain’s Financial District"/>
+	<meta property="og:description" content="Blockchain’s Financial District"/>
+	<link rel='stylesheet' href='src/libraries/onfido.min.css'>
     <script>
       window.WorbliPortalGlobals = { rootPath: '/' };
       if ('serviceWorker' in navigator) {
@@ -71,7 +72,8 @@
 
 
     <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script type="module" src="src/worbli-portal.js"></script>
+	<script type="module" src="src/worbli-portal.js"></script>
+	<script src='src/libraries/onfido.min.js'></script>
     <style>
       @import url('https://fonts.googleapis.com/css?family=Montserrat:300,600,800');
       body {
@@ -85,7 +87,8 @@
     </style>
   </head>
   <body>
-    <worbli-portal></worbli-portal>
+	<worbli-portal></worbli-portal>
+	<!-- <div id='onfido-mount'></div> -->
     <noscript>
       Please enable JavaScript.
     </noscript>
