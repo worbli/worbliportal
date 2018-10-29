@@ -2,7 +2,7 @@
 
 # Update Yum
 sudo yum -y update
-sudo yum install -y yum-util epel-release policycoreutils-python wget net-tools
+sudo yum install -y yum-util epel-release policycoreutils-python wget net-tools certbot-nginx
 sudo yum groupinstall -y development
 
 # Install postgres
