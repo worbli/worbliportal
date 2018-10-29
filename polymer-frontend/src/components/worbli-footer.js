@@ -68,7 +68,7 @@ class WorbliFooter extends PolymerElement {
       </style>
       <div class="container-footer">
         <div>&copy; 2018 Worbli Pty Ltd. All rights reserved.<br>
-        View our <a href="/terms/">Terms & Conditions<a> or <a href="/privacy/">Privacy Policy</a>
+        View our <a href="/terms/">Terms & Privacy Policy</a>
         
         </div>
         <div><a href="mailto:hello@worbli.io">hello@worbli.io</a></div>

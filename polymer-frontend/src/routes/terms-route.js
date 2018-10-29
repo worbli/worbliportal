@@ -81,10 +81,16 @@ class TermsRoute extends PolymerElement {
       
       <div class="split">
         <div class="main">
-          <h1>Terms & Conditions</h1>
-          <iframe src="https://docs.google.com/document/d/e/2PACX-1vRHsvfVKf9guVGUOHZf27Y3TJ3vnK-_vosVGabk4FX6N5qu4XTVe7vLoUy6x5BvVWkE1AkKmRZsSlKM/pub?embedded=true"></iframe>
-
-
+        <h2><strong>WORBLI USER TERMS</strong></h2></br>
+        <p>As a user of the WORBLI ecosystem, you will be subject to certain terms of use based on your status and activities. These are:</p></br>
+        <ul>
+          <li><strong>Platform User</strong> – all users will sign up to the WORBLI Platform. This is essentially the first step in your WORBLI journey. This is where you find out about the WORBLI Network, WORBLI Developer Support and WORBLI Tokens, etc. Here you can read and post content, interact with other WORBLI users and ask questions of WORBLI directly. In order to be a Platform User, you are only required to provide us with your name and contact details. Your use of the WORBLI Platform is governed by the <strong>Platform Terms</strong>, which <em>only</em> set out standard rights and obligations around your use of the WORBLI Platform. At this stage, apart from your name and email, we are not seeking to collect any further identification information nor will we use it for any purpose other than the limited purpose stated in our <strong>Platform Terms</strong> and <strong>Privacy Policy</strong> (both set out below).</li></br>
+          <li><strong>Network User</strong> – the WORBLI Network is the platform upon which users interact with and develop their own dApps. It is the heart of the WORBLI ecosystem. Users gain access to the WORBLI Network upon completion of WORBLI's 'know your customer' verification process. This verification process is integral to WORBLI's goal of being the world's first compliant blockchain network. However, rest assured, we will not be using the information we collect for any reason other than to complete verification, operate the WORBLI Network and meet our own requirements under applicable law. Please read through our <strong>Privacy Policy</strong> set out below for more details. Once you are verified as a Network User you will be able to fully access the WORBLI Network including the dApps available on it. Your use of the WORBLI Network will then be subject to the <strong>Network Terms</strong> set out below.</li></br>
+          <li><strong>dApp Developer</strong> – we view the WORBLI Network as the world's leading platform to develop distributed applications (dApps) that require a robust compliance framework. It is very important to us that we attract and support the world's best dApps developers. We have therefore built a clear rules-based framework to support and nurture developers and ensure they are aligned with our compliance-focused culture. As such, we ask that you agree to our <strong>Network Terms</strong>, as a user of the WORBLI Network, but also our <strong>Developer Terms</strong> which are set out below as a schedule to the <strong>Network Terms</strong>.</li>
+      </ul>
+      <br/>
+      <p>Additionally, we are executing a Sharedrop of WORBLI tokens to all holders of EOS tokens as of the snapshot we have taken on September 7th, 23:59 UTC. Please check our <strong>Sharedrop Terms </strong>for more information on our Sharedrop.</p>
+      <br/><p>In time, we may adapt and update aspects of the <strong>Platform Terms, Network Terms, Developer Terms</strong> and/or our <strong>Privacy Policy</strong> in order to deal with changes to our operations or as required by law. These changes will always be posted to the WORBLI Portal and we will do our best to notify you of the same. Rest assured, no changes will be applicable to you until they have been made available on the WORBLI Portal.</p>
         </div>
         <div class="side">
           <worbli-support></worbli-support>
