@@ -8,7 +8,7 @@ import '@polymer/iron-pages/iron-pages.js';
 setPassiveTouchGestures(true);
 setRootPath(WorbliPortalGlobals.rootPath);
 
-class DasboardRoute extends PolymerElement {
+class DashboardRoute extends PolymerElement {
   static get template() {
     return html`
       <style>
@@ -81,4 +81,4 @@ class DasboardRoute extends PolymerElement {
             break;
     }
   }
-} window.customElements.define('dashboard-route', DasboardRoute);
+} window.customElements.define('dashboard-route', DashboardRoute);
