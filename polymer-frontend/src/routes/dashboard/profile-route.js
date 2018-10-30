@@ -210,9 +210,12 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
           <div class="input-area">
             <div class="section-name">Profile</div>
             <div class="form-inputs">
-              <label>Full Name </label>
-              <input id="fullName" name="fullName" type="text" class="text">
+              <label>Given Name </label>
+              <input id="firstname" name="firstname" type="text" class="text">
               <small class="comment">Your real name, as found on your ID.</small>
+              <label>Given Name </label>
+              <input id="lastname" name="lastname" type="text" class="text">
+              <small class="comment">Your family name, as found on your ID.</small>
               <label>Email Address</label>
               <input id="email" name="email" type="text" class="text">
               <small class="comment">Your email address, as used to request registration.</small>
@@ -491,7 +494,8 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
   }
     _submitRegistration() {
         let params = {};
-        params.fullName = this.$.fullName.value;
+        params.firstname = this.$.firstname.value;
+        params.lastname = this.$.lastname.value;
         params.email = this.$.email.value;
         params.password = this.$.password.value;
         params.location = this.$.location.value;

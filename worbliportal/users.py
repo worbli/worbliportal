@@ -18,7 +18,7 @@ from worbliportal.custom_error import InvalidUsage
 from worbliportal.database import WorkerSessionmaker
 from worbliportal.local_settings import FLASK_ENV
 from worbliportal.mail import MAIL
-from worbliportal.models import RegistrationRequest, User
+from worbliportal.models import object_as_dict, RegistrationRequest, User
 from worbliportal.util.token import authorize, decode_auth_token, encode_auth_token
 
 USER_ROUTES = Blueprint('user_Routes', __name__)
@@ -161,13 +161,14 @@ def login():
         logging.info(type(exc))
         logging.info(str(exc))
         raise InvalidUsage(str(exc), status_code=400)
-    logging.info(str(jwt))
+    #logging.info(str(jwt))
     # This looks like noise, but otherwise we get the b'' wrappers
     # around our jwt
     tmp = base64.urlsafe_b64encode(jwt)
     jtw = tmp.decode('utf-8')
     json_dict = {"success": True, "jwt": jtw}
     return jsonify(json_dict)
+
 
 @USER_ROUTES.route('/api/login/<token>')
 def token_verification(token):
@@ -186,6 +187,35 @@ def token_verification(token):
     return jsonify(json_dict)
 
 
+@USER_ROUTES.route('/api/userDetails/')
+@authorize
+def get_user_details(user_id):
+    """
+    simple endpoint to return a json object
+    with user basics
+    """
+    logging.info("user_id")
+    logging.info(user_id)
+    json_dict = {}
+    try:
+        user = session.query(User).get(user_id)
+        if user is None:
+            # we should never get here because of the authorize decorator
+            msg = "user not found"
+            raise InvalidUsage(msg, status_code=404)
+        json_dict = object_as_dict(user)
+        json_dict.pop('admin')
+        json_dict.pop('password')
+        json_dict.pop('registered_on')
+        json_dict.pop('registration_request_id')
+    except InvalidUsage as iux:
+        raise iux
+    except Exception as exc:
+        msg = str(exc)
+        raise InvalidUsage(msg, status_code=400)
+    return jsonify(json_dict)
+
+
 @USER_ROUTES.route('/api/protected/')
 @authorize
 def protected_test(user_id):
@@ -195,6 +225,7 @@ def protected_test(user_id):
     json_dict = {"who rules": "you do, you rule"}
     json_dict['tokenContent'] = user_id
     return jsonify(json_dict)
+
 
 def create_user(params):
     """ User creator from params,
@@ -207,7 +238,8 @@ def create_user(params):
             registration_code=params['registrationCode']).first()
         user.registration_request = registration_record
         user.registered_on = datetime.now()
-        user.full_name = params["fullName"]
+        user.firstname = params["firstname"]
+        user.lastname = params["lastname"]
         session.add(user)
     except IntegrityError as pic:
         logging.info(pic)
@@ -224,7 +256,7 @@ def create_user(params):
 def validate_user_create_fields(params):
     """ Method to check for appropriate fields being present
     """
-    registration_args = ['email', 'fullName', 'password', 'location']
+    registration_args = ['email', 'firstname', 'lastname', 'password', 'location']
     for key in registration_args:
         if key not in params.keys():
             details = "we don't have %s key" % key
