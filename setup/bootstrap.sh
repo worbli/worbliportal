@@ -93,6 +93,9 @@ sudo systemctl enable nginx
 sudo systemctl restart nginx
 echo "Nginx installed"
 
+# create deploy user
+sudo su -c "useradd deploy -s /bin/bash -m -g wheel -G nginx"
+
 # selinux
 sudo semanage permissive -a httpd_t 
 
@@ -106,20 +109,18 @@ sudo -u postgres psql -c "grant all privileges on database worbliportal to deplo
 # setup virtualenv
 cd /vagrant
 python3.6 -m venv /opt/worbliportal-venv
-source /opt/worbliportal-venv/bin/activate
-pip3.6 install --upgrade pip
-
+chown -R deploy:wheel /opt/worbliportal-venv
+sudo -u deploy -H sh -c "source /opt/worbliportal-venv/bin/activate; pip3.6 install --upgrade pip"
 
 # copy source to deployment directory
 cp -r /vagrant /opt/worbliportal
-sudo su -c "useradd deploy -s /bin/bash -m -g wheel -G nginx"
 echo 'deploy   ALL=(ALL)      NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 sudo chown -R deploy:nginx /opt/worbliportal
 
 # Initialize Frontend
 cd /opt/worbliportal/polymer-frontend
-npm install --unsafe-perm
-npm run build
+sudo -u deploy -H sh -c "npm install --unsafe-perm"
+sudo -u deploy -H sh -c "npm run build"
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u deploy --hp /home/deploy
 sudo -u deploy -H sh -c "pm2 start npm -- start; sleep 2; pm2 save"
 
@@ -134,20 +135,20 @@ FLASK_ENV = \"development\"
 SECRET_KEY = '${SECRET_KEY}'
 " >  "${LOCAL_SETTINGS}"
 fi
+sudo chown deploy:nginx /opt/worbliportal/worbliportal/local_settings.py
 
 # Initialize Backend
-pip3.6 install -e /opt/worbliportal
+#sudo -u deploy -H sh -c "pip3.6 install -e /opt/worbliportal"
+
+/opt/worbliportal-venv/bin/pip3.6 install -e /opt/worbliportal
 cd /opt/worbliportal
 
-if [ ! -f /opt/worbliportal/migrations ]; then
-python3.6 manage.py db init
-fi
+/opt/worbliportal-venv/bin/python3.6 manage.py db init
+/opt/worbliportal-venv/bin/python3.6 manage.py db migrate
+/opt/worbliportal-venv/bin/python3.6 manage.py db upgrade
 
-python3.6 manage.py db migrate
-python3.6 manage.py db upgrade
-
-if [ ! -f /opt/snapshot_imported ]; then
-sudo -u deploy -H sh -c "cd /opt/worbliportal/setup; /opt/worbliportal-venv/bin/python /opt/worbliportal/setup/import_snapshot.py; touch /opt/snapshot_imported"
+if [ ! -f /opt/worbliportal/snapshot_imported ]; then
+sudo -u deploy -H sh -c "cd /opt/worbliportal/setup; /opt/worbliportal-venv/bin/python /opt/worbliportal/setup/import_snapshot.py; touch /opt/worbliportal/snapshot_imported"
 fi
 
 # install and enable service
