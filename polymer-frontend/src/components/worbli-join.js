@@ -111,7 +111,7 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
         console.log("sending email");
         let vals = {"email": this.$.email.value};
         let url = this.baseAPIurl;
-        url = url + "api/registrationRequest/";
+        url = url + "/api/registrationRequest/";
         console.log("url:" + url);
         this.$.registrationRequest.body = vals;
         this.$.registrationRequest.url = url;
