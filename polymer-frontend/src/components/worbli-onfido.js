@@ -1,7 +1,7 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '../css/shared-styles.js';
 import '@polymer/iron-ajax/iron-ajax.js';
-// import Onfido  from 'onfido-sdk-ui/src/index.js'; 
+import Onfido from 'onfido-sdk-ui';
 
 class WorbliOnfido extends PolymerElement {
 	ready(){
@@ -104,6 +104,7 @@ class WorbliOnfido extends PolymerElement {
 		});
 	}
   }
+
 
   _createApplicant(){
 	const params = {
