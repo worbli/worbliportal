@@ -113,7 +113,8 @@ chown -R deploy:wheel /opt/worbliportal-venv
 sudo -u deploy -H sh -c "source /opt/worbliportal-venv/bin/activate; pip3.6 install --upgrade pip"
 
 # copy source to deployment directory
-cp -r /vagrant /opt/worbliportal
+cp -rf /vagrant/* /opt/worbliportal
+
 echo 'deploy   ALL=(ALL)      NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 sudo chown -R deploy:nginx /opt/worbliportal
 
