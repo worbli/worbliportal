@@ -113,7 +113,13 @@ chown -R deploy:wheel /opt/worbliportal-venv
 sudo -u deploy -H sh -c "source /opt/worbliportal-venv/bin/activate; pip3.6 install --upgrade pip"
 
 # copy source to deployment directory
+if [ -f /opt/worbliportal/worbliportal/local_settings.py ]; then
+    mv /opt/worbliportal/worbliportal/local_settings.py /tmp
+fi
 cp -rf /vagrant/* /opt/worbliportal
+if [ -f /tmp/local_settings.py ]; then
+    mv /tmp/local_settings.py /opt/worbliportal/worbliportal/
+fi
 
 echo 'deploy   ALL=(ALL)      NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 sudo chown -R deploy:nginx /opt/worbliportal
@@ -148,8 +154,8 @@ cd /opt/worbliportal
 /opt/worbliportal-venv/bin/python3.6 manage.py db migrate
 /opt/worbliportal-venv/bin/python3.6 manage.py db upgrade
 
-if [ ! -f /opt/worbliportal/snapshot_imported ]; then
-sudo -u deploy -H sh -c "cd /opt/worbliportal/setup; /opt/worbliportal-venv/bin/python /opt/worbliportal/setup/import_snapshot.py; touch /opt/worbliportal/snapshot_imported"
+if [ ! -f /home/deploy/snapshot_imported ]; then
+sudo -u deploy -H sh -c "cd /opt/worbliportal/setup; /opt/worbliportal-venv/bin/python /opt/worbliportal/setup/import_snapshot.py; touch /home/deploy/snapshot_imported"
 fi
 
 # install and enable service
@@ -170,3 +176,8 @@ WantedBy=multi-user.target
 
 sudo systemctl enable worbliportal.service
 sudo systemctl restart worbliportal.service
+
+if [ ! -f /home/deploy/touched_hosts ]; then
+echo "127.0.0.1   worbliportal backend.worbliportal frontend.worbliportal" >> /etc/hosts
+touch /home/deploy/touched_hosts
+fi
