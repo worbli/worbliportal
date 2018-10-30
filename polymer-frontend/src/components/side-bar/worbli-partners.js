@@ -45,7 +45,6 @@ class WorbliPartners extends PolymerElement {
     return {
       init: {
         type: String,
-        observer: '_doOnfido',
       },
     };
   }
