@@ -1,11 +1,10 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '../css/shared-styles.js';
-import '@polymer/iron-ajax/iron-ajax.js';
-import Onfido from 'onfido-sdk-ui';
 
 class WorbliOnfido extends PolymerElement {
 	ready(){
 		super.ready();
+		this.onfidoTest()
 	}
   static get template() {
     return html`
@@ -24,15 +23,7 @@ class WorbliOnfido extends PolymerElement {
           height: 300px;
         }
 	  </style>
-		<iron-ajax
-			auto
-			url="https://token-factory.onfido.com/sdk_token"
-			id="onfidoGetSDKToken"
-			handle-as="json"
-			on-response="_handleSDKToken"
-			debounce-duration="300">
-		</iron-ajax>
-	  <div id="onfido-mount"></div>
+
 	  <div class="center">
       <img src="./images/dashboard-icons/print.svg" class="print">
       <p>Verify your identity to get an on-chain Worbli account and redeem your Share Drop</p>
@@ -81,27 +72,34 @@ class WorbliOnfido extends PolymerElement {
     };
   }
 
-  _handleSDKToken(event,request){
-	console.log(request.status)
-	if (request.status >= 200 && request.status < 400) {
-		console.log(request.response)
-		Onfido.init({
-			useModal: false,
-			token: request.response.message,
-			buttonId: 'onfido-button',
-			containerId: 'onfido-mount',
-			onComplete: function(data) {
-				// callback for when everything is complete
-				console.log("everything is complete")
-			},
-			steps: [
-				'welcome',
-				'document',
-				'face',
-				'complete'
-			]
-		});
-	}
+  onfidoTest(){
+	  console.log("start after")
+	  	var url = "https://token-factory.onfido.com/sdk_token"
+		var request = new XMLHttpRequest()
+		request.open('GET', url, true)
+		request.onload = function() {
+			if (request.status >= 200 && request.status < 400) {
+				var data = JSON.parse(request.responseText)
+
+				Onfido.init({
+					useModal: false,
+					token: data.message,
+					buttonId: 'onfido-button',
+					containerId: 'onfido-mount',
+					onComplete: function(data) {
+						// callback for when everything is complete
+						console.log("everything is complete")
+					},
+					steps: [
+						'welcome',
+						'document',
+						'face',
+						'complete'
+					]
+				});
+			}
+		}
+		request.send();
   }
 
   _createApplicant(){
