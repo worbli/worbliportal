@@ -39,6 +39,8 @@ def register_routes(app):
     app.register_blueprint(ROUTE_BLUEPRINT)
     from worbliportal.users import USER_ROUTES as user_routes
     app.register_blueprint(user_routes)
+    from worbliportal.airgrab import AIRGRAB_ROUTES
+    app.register_blueprint(AIRGRAB_ROUTES)
 
 
 def initialize_extensions(app):
