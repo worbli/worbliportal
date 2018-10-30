@@ -22,7 +22,7 @@ def app():
         yield my_app
 
 @pytest.fixture(scope='session')
-def database(app):
+def database(app): #pylint:disable=unused-argument
     """
     not sure i have to setup more
     """
@@ -38,5 +38,8 @@ def _db(database):
 
 @pytest.fixture()
 def client(app):
+    """
+    client for handling restful calls
+    """
     client = app.test_client()
     yield client

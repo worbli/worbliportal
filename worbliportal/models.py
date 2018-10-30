@@ -6,6 +6,7 @@
 from datetime import datetime, timedelta
 
 from flask_bcrypt import Bcrypt
+from sqlalchemy import inspect
 
 from worbliportal.database import DBH
 
@@ -61,7 +62,8 @@ class User(DBH.Model):
     password = DBH.Column(DBH.String(255), nullable=False)
     registered_on = DBH.Column(DBH.DateTime, nullable=False)
     location = DBH.Column(DBH.String(255), unique=False, nullable=False)
-    full_name = DBH.Column(DBH.String(255), unique=False, nullable=False)
+    firstname = DBH.Column(DBH.String(255), unique=False, nullable=False)
+    lastname = DBH.Column(DBH.String(255), unique=False, nullable=False)
     admin = DBH.Column(DBH.Boolean, nullable=False, default=False)
     registration_request_id = DBH.Column(
         DBH.Integer, DBH.ForeignKey('registration_requests.id'),
@@ -122,8 +124,7 @@ class AirgrabValidationRequest(DBH.Model): # pylint: disable=too-few-public-meth
         self.snapshot_balance_id = snapshot_balance.id
         self.user_id = user_id
 
-
-class SnapshotBalance(DBH.Model): # pylint: disable=too-few-public-methods
+class SnapshotBalance(DBH.Model): # pylint: disable=too-few-public-methods,too-many-instance-attributes
     """ Table for storing EOS snapshot balances.
     """
 
@@ -137,11 +138,11 @@ class SnapshotBalance(DBH.Model): # pylint: disable=too-few-public-methods
     total_nostake = DBH.Column(DBH.Float, nullable=False)
     staked = DBH.Column(DBH.Float, nullable=False)
     delegated = DBH.Column(DBH.Float, nullable=False)
-    total =DBH.Column(DBH.Float, nullable=False)
+    total = DBH.Column(DBH.Float, nullable=False)
     creation_time = DBH.Column(DBH.DateTime, nullable=False)
 
-    def __init__(self, account_name=None, owner_key=None, active_key=None, total_nostake=None, 
-            staked=None, delegated=None, total=None, creation_time=None):
+    def __init__(self, account_name=None, owner_key=None, active_key=None, total_nostake=None,#pylint: disable=too-many-arguments
+                 staked=None, delegated=None, total=None, creation_time=None):
         self.account_name = account_name
         self.owner_key = owner_key
         self.active_key = active_key
@@ -151,3 +152,8 @@ class SnapshotBalance(DBH.Model): # pylint: disable=too-few-public-methods
         self.total = total
         self.creation_time = creation_time
 
+def object_as_dict(obj):
+    """ helper function to turns a row into a dict
+    """
+    return {col.key: getattr(obj, col.key)
+            for col in inspect(obj).mapper.column_attrs}

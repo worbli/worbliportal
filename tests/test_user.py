@@ -16,7 +16,6 @@ def test_registration_request(client, db_session):
     json_data = {"email": email}
     trv = client.post('/api/registrationRequest/', json=json_data)
     json_response = trv.get_json()
-    logging.info(json_response)
     assert trv.status_code == 200
     db_reg = db_session.query(RegistrationRequest).filter_by(
         email=email).first()
@@ -31,8 +30,8 @@ def test_registration_request(client, db_session):
     assert json_response2.items() <= expect_error.items()
     """
 
-#def test_registration_validation(client, db_session):
-def test_registration_validation(client, db_session):
+# db_session mocks the db session so we don't leave noise in our tests
+def test_registration_validation(client, db_session):#pylint:disable=unused-argument
     """
     Test registration validation works to verify existing codes
     """
@@ -42,7 +41,8 @@ def test_registration_validation(client, db_session):
     assert trv.status_code == 200
 
 
-def test_invalidate_registration_request(client, db_session):
+# db_session mocks the db session so we don't leave noise in our tests
+def test_invalidate_registration_request(client, db_session):#pylint:disable=unused-argument
     """
     verify delete has intended effect
     """
@@ -63,7 +63,8 @@ def test_valid_user_registration(client, db_session):
         "location" :"here",
         "registrationCode": registration_code,
         "password": "password",
-        "fullName": "some person"}
+        "firstname": "some",
+        "lastname": "person"}
     trv = client.post('/api/register/', json=json_data)
     assert trv.status_code == 200
     db_user = db_session.query(User).filter_by(
@@ -83,7 +84,8 @@ def test_invalid_user_registration(client):
     assert trv.status_code == 400
 
 
-def test_login_returns_valid_jwt(client):
+# db_session mocks the db session so we don't leave noise in our tests
+def test_login_returns_valid_jwt(client, db_session):#pylint:disable=unused-argument
     """
     verify login works to create valid
     user and valid jwt
@@ -94,14 +96,60 @@ def test_login_returns_valid_jwt(client):
     assert trv.status_code == 200
 
 
-def create_test_user(password="password"):
-    email = "dude3@so.co"
+# db_session mocks the db session so we don't leave noise in our tests
+def test_protected_test(client, db_session):#pylint:disable=unused-argument
+    """
+    simple test to verify user jwt works
+    """
+    user = create_test_user()
+    json_data = {"email": user.email, "password": "password"}
+    trv = client.post('/api/login/', json=json_data)
+    json_response = trv.get_json()
+    token = "Bearer:{}".format(json_response['jwt'])
+
+    headers = {"Authorization": token}
+    trv2 = client.get('/api/protected/', headers=headers)
+    assert trv2.status_code == 200
+
+    token2 = "du:{}".format(json_response['jwt'])
+    headers = {"Authorization": token2}
+    trv3 = client.get('/api/protected/', headers=headers)
+    assert trv3.status_code == 401
+
+
+# db_session mocks the db session so we don't leave noise in our tests
+def test_get_user_details(client, db_session):#pylint:disable=unused-argument
+    """
+    verify user details are returned
+    """
+    user = create_test_user()
+    json_data = {"email": user.email, "password": "password"}
+    trv = client.post('/api/login/', json=json_data)
+    json_response = trv.get_json()
+    logging.info(json_response)
+    token = "Bearer:{}".format(json_response['jwt'])
+    headers = {"Authorization": token}
+    trv2 = client.get('/api/userDetails/', headers=headers)
+    user_details = trv2.get_json()
+    logging.info(user_details)
+    assert user_details['firstname'] == "some"
+    assert user_details['lastname'] == "person"
+    assert trv2.status_code == 200
+
+
+def create_test_user(email=None, password="password"):
+    """
+    helper function for creating users
+    """
+    if email is None:
+        email = "dude3@so.co"
     registration_code = create_registration_record(email)
     json_data = {
         "email": email,
         "location" :"here",
         "registrationCode": registration_code,
-        "password": "password",
-        "fullName": "some person"}
+        "password": password,
+        "firstname": "some",
+        "lastname": "person"}
     test_user = create_user(json_data)
     return test_user
