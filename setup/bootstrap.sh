@@ -125,10 +125,10 @@ if [ ! -f /opt/worbliportal/worbliportal/local_settings.py ]; then
     touch "${LOCAL_SETTINGS}"
     SECRET_KEY=`openssl rand -base64 32`
     echo "
-    SQLALCHEMY_DATABASE_URI = \"postgresql://deploy:test101@localhost:5432/worbliportal\"
-    FLASK_ENV = \"development\"
-    SECRET_KEY = '${SECRET_KEY}'
-    " >  "${LOCAL_SETTINGS}"
+SQLALCHEMY_DATABASE_URI = \"postgresql://deploy:test101@localhost:5432/worbliportal\"
+FLASK_ENV = \"development\"
+SECRET_KEY = '${SECRET_KEY}'
+" >  "${LOCAL_SETTINGS}"
 fi
 
 # Initialize Backend
