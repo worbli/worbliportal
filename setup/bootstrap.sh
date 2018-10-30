@@ -11,7 +11,10 @@ sudo yum install -y postgresql96-server postgresql96-contrib
 
 # Install nodejs
 cd /opt
+if [ ! -f /opt/node-v11.0.0-linux-x64.tar.gz ]; then
 wget https://nodejs.org/download/release/v11.0.0/node-v11.0.0-linux-x64.tar.gz
+fi
+
 sudo tar --strip-components 1 -xzvf node-v* -C /usr
 sudo npm install polymer-cli --unsafe-perm -g
 sudo npm install prpl-server -g
@@ -95,6 +98,7 @@ sudo semanage permissive -a httpd_t
 
 # Initialize DB
 sudo -u postgres psql -c "CREATE USER deploy WITH PASSWORD 'test101';"
+sudo -u postgres createdb deploy
 sudo -u postgres createdb worbliportal
 sudo -u postgres psql -c "grant all privileges on database worbliportal to deploy;"
 
@@ -134,12 +138,17 @@ fi
 # Initialize Backend
 pip3.6 install -e /opt/worbliportal
 cd /opt/worbliportal
+
+if [ ! -f /opt/worbliportal/migrations ]; then
 python3.6 manage.py db init
+fi
+
 python3.6 manage.py db migrate
 python3.6 manage.py db upgrade
 
-sudo -u deploy -H sh -c "cd /opt/worbliportal/setup; /opt/worbliportal-venv/bin/python /opt/worbliportal/setup/import_snapshot.py"
-
+if [ ! -f /opt/snapshot_imported ]; then
+sudo -u deploy -H sh -c "cd /opt/worbliportal/setup; /opt/worbliportal-venv/bin/python /opt/worbliportal/setup/import_snapshot.py; touch /opt/snapshot_imported"
+fi
 
 # install and enable service
 echo "[Unit]
