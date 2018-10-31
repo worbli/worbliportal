@@ -36,7 +36,16 @@ class WorbliWhitepaper extends PolymerElement {
           display: block;
           width: 100%;
           height: 10px;
-        }
+		}
+		@media only screen and (max-width: 768px){
+			.container{
+				width:100%;
+				text-align:center;
+			}
+			.container a {
+				margin:0 auto;
+			}
+		}
       </style>
         <div class="container">
             <div class="title">White Paper</div>

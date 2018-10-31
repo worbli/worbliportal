@@ -56,7 +56,7 @@ class WorbliProfile extends PolymerElement {
         height: 20px;
         display: inline-block;
         margin: 12px 10px 6px 6px;
-    }
+	}
     </style>
     <div class="container">
         <a href="https://www.linkedin.com/in/[[linkedin]]/" target="_blaank">

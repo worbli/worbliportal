@@ -18,7 +18,16 @@ class WorbliTelegram extends PolymerElement {
         }
         .bottom-space {
           padding-bottom: 20px;
-        }
+		}
+		@media only screen and (max-width: 768px){
+			.container{
+				width:100%;
+				text-align:center;
+			}
+			.container a {
+				margin:0 auto;
+			}
+		}
       </style>
         <div class="container">
             <div class="title">Telegram</div>
