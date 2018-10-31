@@ -42,6 +42,7 @@ class WorbliPortal extends PolymerElement {
         <main-route name="main"></main-route>
         <network-route name="network"></network-route>
         <about-route name="about"></about-route>
+        <email-route name="email"></email-route>
         <team-route name="team"></team-route>
         <roadmap-route name="roadmap"></roadmap-route>
         <error-route name="error"></error-route>
@@ -85,7 +86,7 @@ class WorbliPortal extends PolymerElement {
   _routePageChanged(page) {
     if (!page) {
       this.page = 'main';
-    } else if (['main', 'network', 'about', 'team', 'roadmap', 'register', 'sharedrop', 'support', 'terms', 'privacy', 'dashboard', 'signin', 'join', 'profservices'].indexOf(page) !== -1) {
+    } else if (['main', 'network', 'about', 'email', 'team', 'roadmap', 'register', 'sharedrop', 'support', 'terms', 'privacy', 'dashboard', 'signin', 'join', 'profservices'].indexOf(page) !== -1) {
       this.page = page;
     } else {
       this.page = 'error';
@@ -103,6 +104,9 @@ class WorbliPortal extends PolymerElement {
         break;
       case 'about':
         import('./routes/about-route.js');
+        break;
+      case 'email':
+        import('./routes/email-route.js');
         break;
       case 'team':
         import('./routes/team-route.js');
