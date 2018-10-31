@@ -133,7 +133,6 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
             let params = {};
             params.email = this.$.email.value;
             params.password = this.$.password.value;
-            console.log(params);
             let url = this.baseAPIurl;
             url = url + "/api/login/";
             this.$.loginHandler.url = url;
@@ -164,7 +163,7 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
             this.$.loginFailure.style.display ='none';
 
             this.hide = true;
-            this.set('route.path', '/dashboard/claim');
+            this.set('route.path', '/dashboard/landing');
         }
     }
     handleUserError(event, request) {

@@ -79,6 +79,9 @@ class DashboardRoute extends PolymerElement {
         case 'verify':
             import('./dashboard/verify-route.js');
             break;
+        case 'landing':
+            import('./dashboard/landing-route.js');
+            break;
     }
   }
 } window.customElements.define('dashboard-route', DashboardRoute);

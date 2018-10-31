@@ -150,19 +150,6 @@ class MainRoute extends PolymerElement {
 		@media only screen and (max-width: 992px){}
       </style>
 
-      <!-- Google Tag Manager (noscript) -->
-      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KGVQG5T"
-      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-      <!-- End Google Tag Manager (noscript) -->
-
-      <!-- Global site tag (gtag.js) - Google Analytics -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117118714-1"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-117118714-1');
-      </script>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
       <div class="split">
@@ -245,7 +232,7 @@ class MainRoute extends PolymerElement {
 	  super.ready();
 	  // if user is logged in, go to dashboard
 	  if(localStorage.getItem('lsjwt')){
-		this.set('route.path', '/dashboard/claim');
+		this.set('route.path', '/dashboard/landing');
 	  }
   }
 
