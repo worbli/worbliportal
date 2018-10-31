@@ -2,6 +2,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { MyURLSetter } from "../../mixins/worbli-urlsetter.js";
 import '@polymer/iron-form/iron-form.js';
+import '@polymer/paper-input/paper-input.js';
 import '../../css/shared-styles.js';
 import '../../components/worbli-footer.js';
 
@@ -478,12 +479,14 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
                     <div class="input-area">
                         <div class="section-name">Password</div>
 
-
                             <div class="form-inputs">
                             <label>Password</label>
+
                             <input id="pass" name="password" type="password" class="text" required>
+                            <div id="shortPass" style="display:none;"> Password is too short </div>
                             <label>Confirm Password</label>
-                            <input id="confirmPass" name="confirm-password" type="password" class="text" required>
+                            <input id="confirmPass" name="confirmPass" type="password" class="text" required>
+                            <div id="misMatchedPass" style="display:none;"> Passwords don't match </div>
                         </div>
                     </div>
                     <div class="footer">
@@ -498,7 +501,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
   }
     _submitRegistration() {
         console.log("submit call");
-        if (this.$.registration.validate() && this._validatePassword() ) {
+        if (this._validatePassword() && this.$.registration.validate() ) {
 
             let params = {};
             params.firstname = this.$.firstname.value;
@@ -519,15 +522,22 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
     }
 
     _validatePassword(){
+        console.log("attempting to validate password");
         if (this.$.pass.value.length < 8) {
+            this.$.shortPass.style.display = 'block';
             return false;
         }
         if (this.$.pass.value == this.$.confirmPass.value) {
+            this.$.misMatchedPass.style.display = 'none';
+            this.$.shortPass.style.display = 'none';
             return true;
         } else {
+            this.$.shortPass.style.display = 'none';
+            this.$.misMatchedPass.style.display = 'block';
             return false;
         }
     }
+
 
     _deleteRegCode (){
         let regCode = this.subroute.path;
@@ -540,14 +550,12 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
 
     ready()  {
         super.ready();
-        console.log('page load');
-        console.log(this.subroute);
+
         let regCode = this.subroute.path;
         let url = this.baseAPIurl;
         url = url + "/api/registrationRequest" + regCode;
         this.$.registrationValidation.url = url;
         this.$.registrationValidation.method="get";
-        console.log(url);
         this.$.registrationValidation.generateRequest();
     }
 
