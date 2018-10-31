@@ -124,7 +124,7 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
             params.password = this.$.password.value;
             console.log(params);
             let url = this.baseAPIurl;
-            url = url + "api/login/";
+            url = url + "/api/login/";
             this.$.loginHandler.url = url;
             this.$.loginHandler.method="post";
             this.$.loginHandler.headers['content-type']="application/json";
