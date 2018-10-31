@@ -96,7 +96,7 @@ def registration_request():
         if FLASK_ENV not in ("development"):
             send_reg_code_email(
                 registration_code=json_dict['registration_code'], email=email)
-        create_registration_record(json_dict['registration_code'], email, optin)
+        create_registration_record(email, optin, json_dict['registration_code'])
         session.commit()
     except InvalidUsage as iux:
         session.rollback()
