@@ -16,7 +16,7 @@ from flask import Blueprint, jsonify, render_template, request
 from flask_mail import Message
 from worbliportal.custom_error import InvalidUsage
 from worbliportal.database import WorkerSessionmaker
-from worbliportal.local_settings import FLASK_ENV
+from worbliportal.local_settings import FLASK_ENV, MAIL_SENDER
 from worbliportal.mail import MAIL
 from worbliportal.models import object_as_dict, RegistrationRequest, User
 from worbliportal.util.token import authorize, decode_auth_token, encode_auth_token
@@ -24,7 +24,7 @@ from worbliportal.util.token import authorize, decode_auth_token, encode_auth_to
 USER_ROUTES = Blueprint('user_Routes', __name__)
 session = WorkerSessionmaker() #pylint: disable=invalid-name
 
-MAIL_SENDER = "worbliportal@eosdetroit.io"
+#MAIL_SENDER = "worbliportal@eosdetroit.io"
 
 
 @USER_ROUTES.route('/sm123tes654/')
@@ -91,7 +91,6 @@ def registration_request():
         if not validate_email(email):
             msg = "invalid email"
             raise InvalidUsage(msg, status_code=400)
-        
         json_dict['registration_code'] = uuid.uuid4().hex
         if FLASK_ENV not in ("development"):
             send_reg_code_email(

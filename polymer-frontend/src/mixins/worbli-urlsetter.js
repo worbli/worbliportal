@@ -1,5 +1,9 @@
 /*jslint esversion: 6 */
 import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
+// This has the system baseURL and other things
+//
+import "../../config.json";
+
 let myURLSetter;
 myURLSetter = function(superClass) {
     return class extends superClass {
@@ -11,7 +15,7 @@ myURLSetter = function(superClass) {
                 baseAPIurl: {
                     type: String,
                     value: function() {
-                        return "http://0.0.0.0:5000";
+                        return configBaseURL;
                     }
                 },
                 jwt: String,
@@ -26,4 +30,3 @@ myURLSetter = function(superClass) {
     };
 };
 export const MyURLSetter = dedupingMixin(myURLSetter);
-
