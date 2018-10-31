@@ -147,9 +147,6 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
         console.log(JSON.stringify(response));
         this.$.registrationRequestFailure.style.display ='none';
 		//this.set('route.path', `/dashboard/profile/${response.registration_code}`);
-		setTimeout(()=>{
-			this.hide = true;
-		}, 1000)
     }
 
     handleUserError(event, request) {
