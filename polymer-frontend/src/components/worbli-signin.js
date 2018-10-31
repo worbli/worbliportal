@@ -96,6 +96,9 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
       </style>
 
         <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+          <div id="loginFailure" style="display:none;" >
+            <font color="red">Login failed please try again</font>
+          </div>
           <iron-ajax
                 id="loginHandler"
                 handle-as="json"
@@ -107,8 +110,8 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
             <p>Welcome back to WORBLI.....</p>
                 <iron-form id="login">
                 <form>
-                    <paper-input type="text" class="text" name="email" placeholder="Email" id="email" required></paper-input>
-                    <paper-input type="password" class="text" name="password" placeholder="Password" id="password" required></paper-input>
+                    <paper-input type="text" class="text" name="email" placeholder="Email" id="email" auto-validate required></paper-input>
+                    <paper-input type="password" class="text" name="password" placeholder="Password" id="password" auto-validate required></paper-input>
                     <button class="btn-critical" on-click="_checkPassword">Sign In</button>
                 </form>
           </iron-form>
@@ -165,12 +168,15 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
             let lsjwt = localStorage.getItem('lsjwt');
             console.log(lsjwt);
 
+            this.$.loginFailure.style.display ='none';
+
             this.hide = true;
             this.set('route.path', '/dashboard/claim');
         }
     }
     handleUserError(event, request) {
         console.log('errored');
+        this.$.loginFailure.style.display ='block';
     }
 
 } window.customElements.define('worbli-signin', WorbliSignin);
