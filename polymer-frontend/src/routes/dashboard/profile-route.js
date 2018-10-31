@@ -542,7 +542,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
     _deleteRegCode (){
         let regCode = this.subroute.path;
         let url = this.baseAPIurl;
-        url = url + "/api/registrationRequest" + regCode;
+        url = url + "/api/registrationRequest/" + regCode;
         this.$.registrationValidation.url = url;
         this.$.registrationValidation.method="delete";
         this.$.registrationValidation.generateRequest();
@@ -553,7 +553,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
 
         let regCode = this.subroute.path;
         let url = this.baseAPIurl;
-        url = url + "/api/registrationRequest" + regCode;
+        url = url + "/api/registrationRequest/" + regCode;
         this.$.registrationValidation.url = url;
         this.$.registrationValidation.method="get";
         this.$.registrationValidation.generateRequest();
@@ -569,11 +569,11 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
             }
         } else if (method == "delete"){
             console.log("delete method called");
+            this._deleteRegCode();
         } else if (method == "post"){
             console.log("post method called");
-            this._deleteRegCode();
+            this._submitRegistration()l
             this.set('route.path', '/');
         }
-
     }
 } window.customElements.define('profile-route', ProfileRoute);
