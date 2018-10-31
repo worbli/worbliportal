@@ -10,7 +10,8 @@
     "build": "polymer build",
     "lint": "polymer lint",
     "test": "polymer test",
-    "test:integration": "polymer build"
+    "test:integration": "polymer build",
+    "clean": "rm -rf node_modules/"
   },
   "dependencies": {
     "@polymer/app-layout": "^3.0.0-pre.15",
