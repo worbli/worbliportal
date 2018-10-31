@@ -31,6 +31,10 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
         margin-bottom: 10px;
         padding:0 !important;
         --paper-input-container-underline: { display: none; height: 0;}
+        --paper-input-container{padding:0;}
+        --paper-input-container-label-floating{
+          display:none;
+        }
       }
         input.text {
             padding: 8px;
