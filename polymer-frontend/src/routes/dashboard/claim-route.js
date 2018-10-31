@@ -151,7 +151,25 @@ class ClaimRoute extends MyURLSetter(PolymerElement) {
         hr {
           display: block;
           border-top: 1px solid #f5f5f5;
-        }
+		}
+		
+		@media only screen and (max-width: 768px){
+			.section-name{
+				display:none;
+			}
+			.side {
+				width: 100%;
+				padding-left: 0;
+			}
+			.main{
+				max-width:100%;
+			}
+			.section-name{
+				width:auto;
+				min-width:auto;
+			}
+
+		}
       </style>
       
       <!-- Google Tag Manager (noscript) -->
