@@ -24,20 +24,17 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
         margin: 24px 0 24px 0;
         }
       paper-input.text{
-                      padding: 8px;
-            background: #F0F1F3;
-            display: block;
-            width: 100%;
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.02);
-            border: 1px solid;
-            border-color: #C9CCD0 #CFD2D6 #CFD2D6;
-            border-radius: 3px;
-            box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            font-size: 14px;
-            height: auto;
-            margin-bottom:10px;
+        background: #F0F1F3;
+        border-color: #C9CCD0 #CFD2D6 #CFD2D6;
+        border: 1px solid;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        padding:0 !important;
+        --paper-input-container-underline: { display: none; height: 0;}
+        --paper-input-container{padding:0;}
+        --paper-input-container-label-floating{
+          display:none;
+        }
       }
         input.text {
             padding: 8px;
