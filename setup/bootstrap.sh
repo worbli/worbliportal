@@ -116,7 +116,12 @@ sudo -u deploy -H sh -c "source /opt/worbliportal-venv/bin/activate; pip3.6 inst
 if [ -f /opt/worbliportal/worbliportal/local_settings.py ]; then
     mv /opt/worbliportal/worbliportal/local_settings.py /tmp
 fi
-cp -rf /vagrant/* /opt/worbliportal
+
+if [ ! -d /opt/worbliportal ]; then
+mkdir /opt/worbliportal
+fi
+
+cp -rf /vagrant/* /opt/worbliportal/
 if [ -f /tmp/local_settings.py ]; then
     mv /tmp/local_settings.py /opt/worbliportal/worbliportal/
 fi
@@ -126,6 +131,7 @@ sudo chown -R deploy:nginx /opt/worbliportal
 
 # Initialize Frontend
 cd /opt/worbliportal/polymer-frontend
+sudo -u deploy -H sh -c "npm run clean"
 sudo -u deploy -H sh -c "npm install --unsafe-perm"
 sudo -u deploy -H sh -c "npm run build"
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u deploy --hp /home/deploy
