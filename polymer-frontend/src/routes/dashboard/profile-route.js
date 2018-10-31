@@ -200,6 +200,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
         <div class="main">
           <h1>My Profile</h1>
           <div class="input-area">
+<<<<<<< HEAD
             <div class="section-name">Profile</div>
             <iron-ajax
                 id="registrationValidation"
@@ -514,7 +515,6 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
             this.$.registrationValidation.body = params;
             this.$.registrationValidation.generateRequest();
         }
-
     }
 
     _deleteRegCode (){
