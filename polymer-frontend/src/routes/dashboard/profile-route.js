@@ -200,7 +200,6 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
         <div class="main">
           <h1>My Profile</h1>
           <div class="input-area">
-<<<<<<< HEAD
             <div class="section-name">Profile</div>
             <iron-ajax
                 id="registrationValidation"
@@ -508,7 +507,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
             params.registrationCode = this.subroute.path.substring(1);
             console.log(params);
             let url = this.baseAPIurl;
-            url = url + "api/register/";
+            url = url + "/api/register/";
             this.$.registrationValidation.url = url;
             this.$.registrationValidation.method="post";
             this.$.registrationValidation.headers['content-type']="application/json";
@@ -520,7 +519,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
     _deleteRegCode (){
         let regCode = this.subroute.path;
         let url = this.baseAPIurl;
-        url = url + "api/registrationRequest" + regCode;
+        url = url + "/api/registrationRequest" + regCode;
         this.$.registrationValidation.url = url;
         this.$.registrationValidation.method="delete";
         this.$.registrationValidation.generateRequest();
@@ -532,7 +531,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
         console.log(this.subroute);
         let regCode = this.subroute.path;
         let url = this.baseAPIurl;
-        url = url + "api/registrationRequest" + regCode;
+        url = url + "/api/registrationRequest" + regCode;
         this.$.registrationValidation.url = url;
         this.$.registrationValidation.method="get";
         console.log(url);
