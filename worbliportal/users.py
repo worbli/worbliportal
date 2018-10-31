@@ -100,7 +100,7 @@ def registration_request():
     finally:
         session.close()
 
-    if FLASK_ENV in ("development", "testing"):
+    if FLASK_ENV in ("development"):
         json_dict = {"success" : True, "registration_code" : registration_code}
     else:
         json_dict = {"success": True}
