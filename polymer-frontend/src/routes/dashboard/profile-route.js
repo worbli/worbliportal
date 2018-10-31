@@ -513,7 +513,6 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
 			this.$.registrationValidation.body = params;
 			this.$.registrationValidation.generateRequest();
 		}
-
     }
 
     _deleteRegCode (){
@@ -534,6 +533,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
         url = url + "api/registrationRequest" + regCode;
         this.$.registrationValidation.url = url;
         this.$.registrationValidation.method="get";
+        console.log(url);
         this.$.registrationValidation.generateRequest();
     }
 
