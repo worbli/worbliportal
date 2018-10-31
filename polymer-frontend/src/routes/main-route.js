@@ -241,4 +241,12 @@ class MainRoute extends PolymerElement {
     this.dispatchEvent(new CustomEvent('overlay',{bubbles: true, composed: true, detail: {action: 'join'}}));
   }
 
+  ready(){
+	  super.ready();
+	  // if user is logged in, go to dashboard
+	  if(localStorage.getItem('lsjwt')){
+		this.set('route.path', '/dashboard/claim');
+	  }
+  }
+
 } window.customElements.define('main-route', MainRoute);
