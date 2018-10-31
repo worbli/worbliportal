@@ -24,12 +24,15 @@ from worbliportal.util.token import authorize, decode_auth_token, encode_auth_to
 USER_ROUTES = Blueprint('user_Routes', __name__)
 session = WorkerSessionmaker() #pylint: disable=invalid-name
 
+MAIL_SENDER = "worbliportal@eosdetroit.io"
+
+
 @USER_ROUTES.route('/sm123tes654/')
 def test_mail():
     """
     testing mail locally, will disable
     """
-    msg = Message('Hello', sender='rob@eosdetroit.io', \
+    msg = Message('Hello', sender=MAIL_SENDER, \
         recipients=['charlie.e.dumont@gmail.com'])
     msg.body = "Hello Flask message sent from Flask-Mail"
     logging.info(msg)
@@ -113,7 +116,7 @@ def send_join_successful_email(email):
     controller for sending email
     """
     logging.info(email)
-    msg = Message('Worbli Welcome', sender='rob@eosdetroit.io', \
+    msg = Message('Worbli Welcome', sender=MAIL_SENDER, \
         recipients=[email])
     msg.html = render_template('welcome_email.html')
     logging.info(msg)
@@ -126,7 +129,7 @@ def send_reg_code_email(registration_code=None, email=None):
     controller for sending reg code email
     """
     logging.info(registration_code, email)
-    msg = Message('Worbli Confirmation', sender='rob@eosdetroit.io', \
+    msg = Message('Worbli Confirmation', sender=MAIL_SENDER, \
         recipients=[email])
     msg.html = render_template('register_email.html', securityCode=registration_code)
     logging.info(msg)
