@@ -103,16 +103,29 @@ def registration_request():
         json_dict = {"success" : True, "registration_code" : registration_code}
     else:
         json_dict = {"success": True}
-        send_email(registration_code=registration_code, email=email)
+        send_reg_code_email(registration_code=registration_code, email=email)
     return jsonify(json_dict)
 
 
-def send_email(registration_code=None, email=None):
+def send_join_successful_email(email):
     """
     controller for sending email
     """
+    logging.info(email)
+    msg = Message('Worblie Welcome', sender='noreply@eosdetroit.com', \
+        recipients=[email])
+    msg.html = render_template('welcome_email.html')
+    logging.info(msg)
+    #MAIL.connect()
+    MAIL.send(msg)
+
+
+def send_reg_code_email(registration_code=None, email=None):
+    """
+    controller for sending reg code email
+    """
     logging.info(registration_code, email)
-    msg = Message('Hello', sender='noreply@eosdetroit.com', \
+    msg = Message('Worbli Confirmation', sender='noreply@eosdetroit.com', \
         recipients=[email])
     msg.html = render_template('register_email.html', securityCode=registration_code)
     logging.info(msg)
@@ -126,16 +139,19 @@ def register():
     """
     try:
         req_json = request.get_json()
+        email = req_json['email']
         # validate registration record
         if not validate_registration_record(
                 registration_code=req_json['registrationCode'],
-                email=req_json['email']):
+                email=email):
             msg = "Registration code and email do not align"
             raise InvalidUsage(msg)
         # validate fields
         validate_user_create_fields(req_json)
         # create user
         create_user(req_json)
+        if FLASK_ENV not in ("development", "testing"):
+            send_join_successful_email(email)
         session.commit()
     except InvalidUsage as iux:
         session.rollback()
