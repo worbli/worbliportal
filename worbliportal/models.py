@@ -128,6 +128,7 @@ class AirgrabValidationRequest(DBH.Model): # pylint: disable=too-few-public-meth
         self.snapshot_balance_id = snapshot_balance.id
         self.user_id = user_id
 
+
 class SnapshotBalance(DBH.Model): # pylint: disable=too-few-public-methods,too-many-instance-attributes
     """ Table for storing EOS snapshot balances.
     """

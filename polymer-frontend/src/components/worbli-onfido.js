@@ -24,8 +24,6 @@ class WorbliOnfido extends PolymerElement {
           width: 300px;
           height: 300px;
         }
-	  </style>
-
 	  <div class="center">
       <img src="./images/dashboard-icons/print.svg" class="print">
       <p>Verify your identity to get an on-chain Worbli account and redeem your Share Drop</p>
