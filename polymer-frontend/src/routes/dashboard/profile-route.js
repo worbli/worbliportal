@@ -221,7 +221,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
                         <small class="comment">Your email address, as used to request registration.</small>
                         <label>Country of Residence</label>
                         <select class="dropdown" id="location" required>
-                            <option value="0">Select</option>
+                            <option >Select</option>
                                 <option value="4">Afghanistan</option>
                                 <option value="248">Åland Islands</option>
                                 <option value="8">Albania</option>
@@ -477,11 +477,13 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
                     <hr>
                     <div class="input-area">
                         <div class="section-name">Password</div>
+
+
                             <div class="form-inputs">
                             <label>Password</label>
-                            <input id="password" name="password" type="password" class="text" required>
+                            <input id="pass" name="password" type="password" class="text" required>
                             <label>Confirm Password</label>
-                            <input id="confirm-password" name="confirm-password" type="password" class="text" required>
+                            <input id="confirmPass" name="confirm-password" type="password" class="text" required>
                         </div>
                     </div>
                     <div class="footer">
@@ -496,13 +498,13 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
   }
     _submitRegistration() {
         console.log("submit call");
-        if (this.$.registration.validate()) {
+        if (this.$.registration.validate() && this._validatePassword() ) {
 
             let params = {};
             params.firstname = this.$.firstname.value;
             params.lastname = this.$.lastname.value;
             params.email = this.$.email.value;
-            params.password = this.$.password.value;
+            params.password = this.$.pass.value;
             params.location = this.$.location.value;
             params.registrationCode = this.subroute.path.substring(1);
             console.log(params);
@@ -513,6 +515,17 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
             this.$.registrationValidation.headers['content-type']="application/json";
             this.$.registrationValidation.body = params;
             this.$.registrationValidation.generateRequest();
+        }
+    }
+
+    _validatePassword(){
+        if (this.$.pass.value.length < 8) {
+            return false;
+        }
+        if (this.$.pass.value == this.$.confirmPass.value) {
+            return true;
+        } else {
+            return false;
         }
     }
 
