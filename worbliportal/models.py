@@ -28,18 +28,22 @@ class RegistrationRequest(DBH.Model): # pylint: disable=too-few-public-methods
     requested_on = DBH.Column(DBH.DateTime, nullable=False)
     valid_until = DBH.Column(DBH.DateTime, nullable=False)
     valid = DBH.Column(DBH.Boolean, nullable=False, default=False)
+    optin = DBH.Column(DBH.Boolean, nullable=False, default=False)
     spent_on = DBH.Column(DBH.DateTime, nullable=True)
     voided_on = DBH.Column(DBH.DateTime, nullable=True)
     user = DBH.relationship("User", uselist=False, back_populates="registration_request")
 
-    def __init__(self, email=None, registration_code=None, valid_until=None, valid=False):
+    def __init__(#pylint:disable=too-many-arguments
+            self, email=None, registration_code=None, valid_until=None, valid=False,
+            optin=False):
         self.email = email
         self.registration_code = registration_code
         self.registered_on = datetime.now()
         now = datetime.now()
         self.requested_on = now
+        self.optin = optin
         if valid_until is None:
-            valid_until = now + timedelta(hours=48)
+            valid_until = now + timedelta(days=48)
         self.valid_until = valid_until
         self.valid = valid
 
