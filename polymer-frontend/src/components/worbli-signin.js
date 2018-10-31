@@ -90,7 +90,7 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
           </iron-ajax>
             <h2>Sign In</h2>
 			<p>Welcome back to WORBLI.....</p>
-			<iron-form>
+			<iron-form id="login">
 				<form>
 					<input type="text" class="text" name="email" placeholder="Email" id="email" required>
 					<input type="text" class="text" name="password" placeholder="Password" id="password" required>
@@ -118,17 +118,19 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
         };
     }
     _checkPassword() {
-        let params = {};
-        params.email = this.$.email.value;
-        params.password = this.$.password.value;
-        console.log(params);
-        let url = this.baseAPIurl;
-        url = url + "api/login/";
-        this.$.loginHandler.url = url;
-        this.$.loginHandler.method="post";
-        this.$.loginHandler.headers['content-type']="application/json";
-        this.$.loginHandler.body = params;
-        this.$.loginHandler.generateRequest();
+        if (this.$.login.validate()) {
+            let params = {};
+            params.email = this.$.email.value;
+            params.password = this.$.password.value;
+            console.log(params);
+            let url = this.baseAPIurl;
+            url = url + "api/login/";
+            this.$.loginHandler.url = url;
+            this.$.loginHandler.method="post";
+            this.$.loginHandler.headers['content-type']="application/json";
+            this.$.loginHandler.body = params;
+            this.$.loginHandler.generateRequest();
+        }
     }
     _join(){
         this.join = true;
