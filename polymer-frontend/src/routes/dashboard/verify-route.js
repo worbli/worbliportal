@@ -157,7 +157,29 @@ class VerifyRoute extends PolymerElement {
           height: 400px;
           background-color: #F6F6F7;
           margin-left: 100px;
-        }
+		}
+		@media only screen and (max-width: 768px){
+			.section-name{
+				display:none;
+			}
+			.side {
+				width: 100%;
+				padding-left: 0;
+			}
+			.main{
+				max-width:100%;
+			}
+			.section-name{
+				width:auto;
+				min-width:auto;
+			}
+
+			worbli-onfido{
+				width:100%;
+				margin-left:0;
+			}
+
+		}
       </style>
       
       <!-- Google Tag Manager (noscript) -->

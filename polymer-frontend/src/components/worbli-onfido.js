@@ -6,7 +6,7 @@ import '@polymer/iron-ajax/iron-ajax.js';
 class WorbliOnfido extends PolymerElement {
 	ready(){
 		super.ready();
-		this.onfidoTest()
+		//this.onfidoTest()
 	}
   static get template() {
     return html`
@@ -24,10 +24,12 @@ class WorbliOnfido extends PolymerElement {
           width: 300px;
           height: 300px;
         }
-	  <div class="center">
-      <img src="./images/dashboard-icons/print.svg" class="print">
-      <p>Verify your identity to get an on-chain Worbli account and redeem your Share Drop</p>
-      </div>
+		<div class="center">
+		<img src="./images/dashboard-icons/print.svg" class="print">
+		<p>Verify your identity to get an on-chain Worbli account and redeem your Share Drop</p>
+		  <button id='onfido-button' disabled>[[buttonText]]</button>
+		  <div id='onfido-mount'></div>
+		</div>
     `;
   }
   static get properties() {
