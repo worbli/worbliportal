@@ -74,7 +74,9 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
             cursor: pointer;
             font-weight: 600;
         }
-
+		.errorMsg{
+			color:red;
+		}
       </style>
             <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
             <iron-ajax
@@ -87,8 +89,8 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
             <h2>Join WORBLI</h2>
 			<p>WORBLI is the place to access smarter financial services</p>
           <div id="registrationRequestFailure" style="display:none;" >
-            <font color="red">There was a problem with your registration request please confirm <br/>
-          your email and that you don't have an existing request</font>
+            <p class="errorMsg">There was a problem with your registration request please confirm
+          your email and that you don't have an existing request</p>
           </div>
 
 			<iron-form id="join">

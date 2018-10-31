@@ -3,7 +3,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-form/iron-form.js';
-import '@polymer/paper-input/paper-input.js';
+import '@polymer/iron-input/iron-input.js';
 import { MyURLSetter } from "../mixins/worbli-urlsetter.js";
 import '../css/shared-styles.js';
 
@@ -23,20 +23,12 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
         p {
         margin: 24px 0 24px 0;
         }
-      paper-input.text{
-        background: #F0F1F3;
-        border-color: #C9CCD0 #CFD2D6 #CFD2D6;
-        border: 1px solid;
-        border-radius: 3px;
-        margin-bottom: 10px;
-        padding:0 !important;
-        --paper-input-container-underline: { display: none; height: 0;}
-        --paper-input-container{padding:0;}
-        --paper-input-container-label-floating{
-          display:none;
+
+        iron-input{
+          width:100%;
         }
-      }
-        input.text {
+
+      iron-input > input.text {
             padding: 8px;
             background: #F0F1F3;
             display: block;
@@ -52,17 +44,17 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
             height: auto;
             margin-bottom:10px;
         }
-        input:focus, select:focus, textarea:focus, button:focus {
+        iron-input > input:focus, select:focus, textarea:focus, button:focus {
             outline: none;
         }
   
-        input.text:focus {
+        iron-input > input.text:focus {
             background: #fff;
             border: 1px solid #8bd2d0 !important;
             box-shadow: 0 0 0 2px rgba(133,176,212,0.4);
         }
       
-        input.text.error {
+        iron-input> input.text.error {
             color: #db6265;
             border-color: #d2928c;
             box-shadow: 0 0 0 2px #f0d1ce;
@@ -107,8 +99,12 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
             <p>Welcome back to WORBLI.....</p>
                 <iron-form id="login">
                 <form>
-                    <paper-input type="text" class="text" name="email" placeholder="Email" id="email" auto-validate required></paper-input>
-                    <paper-input type="password" class="text" name="password" placeholder="Password" id="password" auto-validate required></paper-input>
+                    <iron-input type="text" class="text" name="email" placeholder="Email" id="email" auto-validate required>
+                      <input type="text" class="text" name="email" placeholder="Email" id="email" required/>
+                    </iron-input>
+                    <iron-input type="password" class="text" name="password" placeholder="Password" id="password" auto-validate required>
+                      <input type="password" class="text" name="password" placeholder="Password" id="password" auto-validate required/>
+                    </iron-input>
                     <button class="btn-critical" on-click="_checkPassword">Sign In</button>
                 </form>
           </iron-form>
