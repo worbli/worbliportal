@@ -29,7 +29,7 @@ def test_mail():
     """
     testing mail locally, will disable
     """
-    msg = Message('Hello', sender='noreply@eosdetroit.com', \
+    msg = Message('Hello', sender='rob@eosdetroit.io', \
         recipients=['charlie.e.dumont@gmail.com'])
     msg.body = "Hello Flask message sent from Flask-Mail"
     logging.info(msg)
@@ -113,7 +113,7 @@ def send_join_successful_email(email):
     controller for sending email
     """
     logging.info(email)
-    msg = Message('Worblie Welcome', sender='noreply@eosdetroit.com', \
+    msg = Message('Worbli Welcome', sender='rob@eosdetroit.io', \
         recipients=[email])
     msg.html = render_template('welcome_email.html')
     logging.info(msg)
@@ -126,7 +126,7 @@ def send_reg_code_email(registration_code=None, email=None):
     controller for sending reg code email
     """
     logging.info(registration_code, email)
-    msg = Message('Worbli Confirmation', sender='noreply@eosdetroit.com', \
+    msg = Message('Worbli Confirmation', sender='rob@eosdetroit.io', \
         recipients=[email])
     msg.html = render_template('register_email.html', securityCode=registration_code)
     logging.info(msg)
