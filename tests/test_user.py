@@ -13,7 +13,8 @@ def test_registration_request(client, db_session):
     second test with same user should give us a 400
     """
     email = "dude3@so.co"
-    json_data = {"email": email}
+    optin = True
+    json_data = {"email": email, "optin": optin}
     trv = client.post('/api/registrationRequest/', json=json_data)
     json_response = trv.get_json()
     assert trv.status_code == 200
@@ -35,7 +36,8 @@ def test_registration_validation(client, db_session):#pylint:disable=unused-argu
     """
     Test registration validation works to verify existing codes
     """
-    registration_code = create_registration_record("dude3@so.co")
+    optin = True
+    registration_code = create_registration_record("dude3@so.co", optin)
     url = "/api/registrationRequest/{}".format(str(registration_code))
     trv = client.get(url)
     assert trv.status_code == 200
@@ -46,7 +48,8 @@ def test_invalidate_registration_request(client, db_session):#pylint:disable=unu
     """
     verify delete has intended effect
     """
-    registration_code = create_registration_record("dude3@so.co")
+    optin = True
+    registration_code = create_registration_record("dude3@so.co", optin)
     url = "/api/registrationRequest/{}".format(str(registration_code))
     trv = client.delete(url)
     assert trv.status_code == 200
@@ -57,7 +60,8 @@ def test_valid_user_registration(client, db_session):
     Test to make sure a user registers correctly
     """
     email = "dude3@so.co"
-    registration_code = create_registration_record(email)
+    optin = True
+    registration_code = create_registration_record(email, optin)
     json_data = {
         "email": email,
         "location" :"here",
@@ -143,7 +147,8 @@ def create_test_user(email=None, password="password"):
     """
     if email is None:
         email = "dude3@so.co"
-    registration_code = create_registration_record(email)
+    optin = True
+    registration_code = create_registration_record(email, optin)
     json_data = {
         "email": email,
         "location" :"here",
