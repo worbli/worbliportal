@@ -81,6 +81,7 @@ def registration_request():
     """
     try:
         request_json = request.get_json()
+        logging.info(request_json)
         email = request_json['email']
         optin = request_json['optin']
         if not validate_email(email):

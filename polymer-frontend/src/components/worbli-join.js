@@ -86,11 +86,11 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
             </iron-ajax>
             <h2>Join WORBLI</h2>
 			<p>WORBLI is the place to access smarter financial services</p>
-			<iron-form>
-				<form method="POST">
+			<iron-form id="join">
+				<form method="POST" >
 					<input type="text" class="text" placeholder="Email Address" id="email" required>
 					<label><input type="checkbox" name="checkbox" value="value" required> I agree to the <span><a href="/terms/">Terms and Privacy Policy</a></span></label></br>
-					<label><input type="checkbox" name="checkbox" value="value" required> I'm happy to recieve marketing communications from WORBLI</label></br></br>
+					<label><input type="checkbox" name="checkbox" value="value" id="optin"> I'm happy to recieve marketing communications from WORBLI</label></br></br>
 					<button class="btn-critical" on-click="_sendEmail">Join</button>
 				</form>
 			</iron-form>
@@ -113,16 +113,18 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
     }
 
     _sendEmail(){
-        console.log("sending email");
-        let vals = {"email": this.$.email.value};
-        let url = this.baseAPIurl;
-        url = url + "/api/registrationRequest/";
-        console.log("url:" + url);
-        this.$.registrationRequest.body = vals;
-        this.$.registrationRequest.url = url;
-        this.$.registrationRequest.method="post";
-        this.$.registrationRequest.headers['content-type']="application/json";
-        this.$.registrationRequest.generateRequest();
+        if (this.$.join.validate()) {
+            console.log("sending email");
+            let vals = {"email": this.$.email.value, "optin" : this.$.optin.checked};
+            let url = this.baseAPIurl;
+            url = url + "/api/registrationRequest/";
+            console.log("url:" + url);
+            this.$.registrationRequest.body = vals;
+            this.$.registrationRequest.url = url;
+            this.$.registrationRequest.method="post";
+            this.$.registrationRequest.headers['content-type']="application/json";
+            this.$.registrationRequest.generateRequest();
+        }
     }
 
     handleRegister(event, request) {
@@ -131,7 +133,7 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
         console.log("we got ");
         console.log(JSON.stringify(response));
         this.hide = true;
-        this.set('route.path', '/dashboard/email');
+        this.set('route.path', '/email');
     }
 
     handleUserError(event, request) {
