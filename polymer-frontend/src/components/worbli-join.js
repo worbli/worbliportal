@@ -86,6 +86,11 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
             </iron-ajax>
             <h2>Join WORBLI</h2>
 			<p>WORBLI is the place to access smarter financial services</p>
+          <div id="registrationRequestFailure" style="display:none;" >
+            <font color="red">There was a problem with your registration request please confirm <br/>
+          your email and that you don't have an existing request</font>
+          </div>
+
 			<iron-form id="join">
 				<form method="POST" >
 					<input type="text" class="text" placeholder="Email Address" id="email" required>
@@ -128,16 +133,18 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
     }
 
     handleRegister(event, request) {
-		
         var response = request.response;
         console.log("we got ");
         console.log(JSON.stringify(response));
         this.hide = true;
+        this.$.registrationRequestFailure.style.display ='none';
         this.set('route.path', '/email');
     }
 
     handleUserError(event, request) {
         console.log('errored');
+        this.$.registrationRequestFailure.style.display ='block';
+
     }
 
     _signIn(){
