@@ -3,7 +3,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-form/iron-form.js';
-import '@polymer/iron-localstorage/iron-localstorage.js';
+import '@polymer/paper-input/paper-input.js';
 import { MyURLSetter } from "../mixins/worbli-urlsetter.js";
 import '../css/shared-styles.js';
 
@@ -23,6 +23,22 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
         p {
         margin: 24px 0 24px 0;
         }
+      paper-input.text{
+                      padding: 8px;
+            background: #F0F1F3;
+            display: block;
+            width: 100%;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.02);
+            border: 1px solid;
+            border-color: #C9CCD0 #CFD2D6 #CFD2D6;
+            border-radius: 3px;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            font-size: 14px;
+            height: auto;
+            margin-bottom:10px;
+      }
         input.text {
             padding: 8px;
             background: #F0F1F3;
@@ -79,7 +95,6 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
 
       </style>
 
-        <iron-localstorage name="token-storage" value="{{jwt}}"></iron-localstorage>
         <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
           <iron-ajax
                 id="loginHandler"
@@ -89,14 +104,14 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
                 debounce-duration="300">
           </iron-ajax>
             <h2>Sign In</h2>
-			<p>Welcome back to WORBLI.....</p>
-			<iron-form id="login">
-				<form>
-					<input type="text" class="text" name="email" placeholder="Email" id="email" required>
-					<input type="text" class="text" name="password" placeholder="Password" id="password" required>
-					<button class="btn-critical" on-click="_checkPassword">Sign In</button>
-				</form>
-			</iron-form>
+            <p>Welcome back to WORBLI.....</p>
+                <iron-form id="login">
+                <form>
+                    <paper-input type="text" class="text" name="email" placeholder="Email" id="email" required></paper-input>
+                    <paper-input type="password" class="text" name="password" placeholder="Password" id="password" required></paper-input>
+                    <button class="btn-critical" on-click="_checkPassword">Sign In</button>
+                </form>
+          </iron-form>
             <div class="center">New to Worbli? <span on-click="_join">Join WORBLI</span></div>
     `;
   }
