@@ -107,6 +107,8 @@ class AirgrabValidationRequest(DBH.Model): # pylint: disable=too-few-public-meth
     # pylint: disable=invalid-name
     id = DBH.Column(DBH.Integer, primary_key=True, autoincrement=True)
     worbli_account_name = DBH.Column(DBH.String(12), unique=True, nullable=False)
+    worbli_owner_key = DBH.Column(DBH.String(57), nullable=False)
+    worbli_active_key = DBH.Column(DBH.String(57), nullable=False)
     security_code = DBH.Column(DBH.String(64), unique=True, nullable=False)
     completed = DBH.Column(DBH.Boolean, nullable=False, default=False)
     snapshot_balance = DBH.relationship("SnapshotBalance")
@@ -116,9 +118,15 @@ class AirgrabValidationRequest(DBH.Model): # pylint: disable=too-few-public-meth
     user = DBH.relationship("User", uselist=False)
     user_id = DBH.Column(DBH.Integer, DBH.ForeignKey('users.id'), nullable=False)
 
-    def __init__(self, worbli_account_name=None, security_code=None):
+    def __init__(self, worbli_account_name=None,worbli_owner_key=None,
+            worbli_active_key=None, security_code=None, snapshot_balance=None,
+            user_id=None):
         self.worbli_account_name = worbli_account_name
+        self.worbli_owner_key = worbli_owner_key
+        self.worbli_active_key = worbli_active_key
         self.security_code = security_code
+        self.snapshot_balance_id = snapshot_balance.id
+        self.user_id = user_id
 
 
 class SnapshotBalance(DBH.Model): # pylint: disable=too-few-public-methods,too-many-instance-attributes

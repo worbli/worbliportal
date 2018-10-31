@@ -54,6 +54,6 @@ setup(
         "validate-email==1.3",
         "Werkzeug==0.14.1",
         "wrapt==1.10.11",
-        "uwsgi"
+        "uwsgi",
     ],
 )

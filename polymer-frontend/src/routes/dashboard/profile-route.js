@@ -221,7 +221,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
                         <small class="comment">Your email address, as used to request registration.</small>
                         <label>Country of Residence</label>
                         <select class="dropdown" id="location" required>
-                            <option >Select</option>
+                            <option>Select</option>
                                 <option value="4">Afghanistan</option>
                                 <option value="248">Åland Islands</option>
                                 <option value="8">Albania</option>
