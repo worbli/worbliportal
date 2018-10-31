@@ -151,7 +151,7 @@ def register():
         validate_user_create_fields(req_json)
         # create user
         create_user(req_json)
-        if FLASK_ENV not in ("development", "testing"):
+        if FLASK_ENV not in ("development"):
             send_join_successful_email(email)
         session.commit()
     except InvalidUsage as iux:
