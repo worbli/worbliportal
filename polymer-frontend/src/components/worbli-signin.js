@@ -2,6 +2,7 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/iron-ajax/iron-ajax.js';
+import '@polymer/iron-form/iron-form.js';
 import '@polymer/iron-localstorage/iron-localstorage.js';
 import { MyURLSetter } from "../mixins/worbli-urlsetter.js";
 import '../css/shared-styles.js';
@@ -88,10 +89,14 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
                 debounce-duration="300">
           </iron-ajax>
             <h2>Sign In</h2>
-            <p>Welcome back to WORBLI.....</p>
-            <input type="text" class="text" name="email" placeholder="Email" id="email">
-            <input type="text" class="text" name="password" placeholder="Password" id="password">
-            <button class="btn-critical" on-click="_checkPassword">Sign In</button>
+			<p>Welcome back to WORBLI.....</p>
+			<iron-form>
+				<form>
+					<input type="text" class="text" name="email" placeholder="Email" id="email" required>
+					<input type="text" class="text" name="password" placeholder="Password" id="password" required>
+					<button class="btn-critical" on-click="_checkPassword">Sign In</button>
+				</form>
+			</iron-form>
             <div class="center">New to Worbli? <span on-click="_join">Join WORBLI</span></div>
     `;
   }
