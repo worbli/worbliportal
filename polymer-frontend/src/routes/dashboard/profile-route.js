@@ -589,7 +589,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
             this._deleteRegCode();
         } else if (method == "post"){
             console.log("post method called");
-            this._submitRegistration()l
+            this._submitRegistration();
             this.set('route.path', '/');
         }
     }
