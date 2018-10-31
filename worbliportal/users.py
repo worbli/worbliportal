@@ -118,7 +118,7 @@ def send_join_successful_email(email):
     logging.info(email)
     msg = Message('Worbli Welcome', sender=MAIL_SENDER, \
         recipients=[email])
-    msg.html = render_template('welcome_email.html')
+    msg.html = render_template('welcome.html')
     logging.info(msg)
     #MAIL.connect()
     MAIL.send(msg)
