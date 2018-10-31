@@ -14,13 +14,13 @@ myURLSetter = function(superClass) {
                         return "http://0.0.0.0:5000";
                     }
                 },
-				jwt: String,
-				onfidoAPIToken:{
-					type: String,
-					value : function(){
-						return "token=test_cYzbqYVlmYixWQN0V6CYD3AOlIYdeZk9"
-					}
-				}
+                jwt: String,
+                onfidoAPIToken:{
+                    type: String,
+                    value : function(){
+                        return "token=test_cYzbqYVlmYixWQN0V6CYD3AOlIYdeZk9";
+                    }
+                }
             };
         }
     };
