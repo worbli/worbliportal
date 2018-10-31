@@ -135,7 +135,7 @@ sudo -u deploy -H sh -c "npm run clean"
 sudo -u deploy -H sh -c "npm install --unsafe-perm"
 sudo -u deploy -H sh -c "npm run build"
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u deploy --hp /home/deploy
-sudo -u deploy -H sh -c "pm2 start npm -- start; sleep 2; pm2 save"
+sudo -u deploy -H sh -c "pm2 start worbliportal -- start; sleep 2; pm2 save"
 
 
 if [ ! -f /opt/worbliportal/worbliportal/local_settings.py ]; then
