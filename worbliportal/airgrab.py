@@ -74,10 +74,10 @@ def validate_eos_account(eos_account_name, snapshot_balance):
 
 
 def validate_worbli_account(worbli_account_name):
-    if "worbli" in worbli_account_name or not 
+    if ("worbli" in worbli_account_name or not 
             (len(eos_account_name) >= WBI_ACCOUNT_CHAR_MIN and 
             len(eos_account_name) <= ACCOUNT_CHAR_MAX and 
-            bool(re.match(WBI_ACCOUNT_NAME_REGEXP, eos_account_name))):
+            bool(re.match(WBI_ACCOUNT_NAME_REGEXP, eos_account_name)))):
         msg = "The WORBLI account name is invalid. \
         Please enter a name that is 6 to 12 characters and contains only \
         characters a-z and/or 1-5 and does not contain 'worbli'"
