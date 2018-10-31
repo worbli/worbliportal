@@ -207,7 +207,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
 				on-response="handleResponse"
 				debounce-duration="300">
 			</iron-ajax>
-			<iron-form>
+			<iron-form id="profile">
 				<form>
 					<div class="form-inputs">
 						<label>Given Name </label>
@@ -495,22 +495,24 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
     `;
   }
     _submitRegistration() {
-		console.log("submit call");
-        let params = {};
-        params.firstname = this.$.firstname.value;
-        params.lastname = this.$.lastname.value;
-        params.email = this.$.email.value;
-        params.password = this.$.password.value;
-        params.location = this.$.location.value;
-        params.registrationCode = this.subroute.path.substring(1);
-        console.log(params);
-        let url = this.baseAPIurl;
-        url = url + "api/register/";
-        this.$.registrationValidation.url = url;
-        this.$.registrationValidation.method="post";
-        this.$.registrationValidation.headers['content-type']="application/json";
-        this.$.registrationValidation.body = params;
-        this.$.registrationValidation.generateRequest();
+		if (this.$.profile.validate()) {
+			console.log("submit call");
+			let params = {};
+			params.firstname = this.$.firstname.value;
+			params.lastname = this.$.lastname.value;
+			params.email = this.$.email.value;
+			params.password = this.$.password.value;
+			params.location = this.$.location.value;
+			params.registrationCode = this.subroute.path.substring(1);
+			console.log(params);
+			let url = this.baseAPIurl;
+			url = url + "api/register/";
+			this.$.registrationValidation.url = url;
+			this.$.registrationValidation.method="post";
+			this.$.registrationValidation.headers['content-type']="application/json";
+			this.$.registrationValidation.body = params;
+			this.$.registrationValidation.generateRequest();
+		}
 
     }
 
