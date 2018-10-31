@@ -61,7 +61,13 @@ class RoadmapRoute extends PolymerElement {
           font-weight: 600;
           margin-top: 12px;
           margin-bottom: 12px;
-        }
+		}
+		@media only screen and (max-width: 768px){
+			.side {
+				width: 100%;
+				padding-left: 0;
+			}
+		}
       </style>
 
       <!-- Google Tag Manager (noscript) -->

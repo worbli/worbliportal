@@ -107,7 +107,13 @@ class BlockProducers extends PolymerElement {
             }
             ul.blue:hover {
                 background-color: #f5f5f5;
-            }
+			}
+			@media only screen and (max-width: 768px){
+				.container{
+					width:100%;
+					text-align:center;
+				}
+			}
         </style>
         <div class="container">
             <div class="title">Worbli Block Producers</div>

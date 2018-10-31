@@ -118,15 +118,36 @@ class MainRoute extends PolymerElement {
 		.mobile-signup-buttons{
 			display:none;
 		}
-		@media only screen and (max-width: 600px){
+
+
+		@media only screen and (max-width: 480px){
+
+		}
+
+		@media only screen and (max-width: 768px){
 			.mobile-signup-buttons{
 				display:block;
 			}
+			.box-link{
+				width:100%;
+				display:block;
+			}
+			.side {
+				width: 100%;
+				padding-left: 0;
+			}
 
-      p {
-        font-size: 11px;
-      }
+			.square {
+				width: 100%;
+				min-height: 400px;
+				margin-right: 24px;
+				margin-bottom: 24px;
+			}
+
 		}
+
+
+		@media only screen and (max-width: 992px){}
       </style>
 
       <!-- Google Tag Manager (noscript) -->

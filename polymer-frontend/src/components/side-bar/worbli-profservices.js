@@ -21,7 +21,16 @@ class WorbliProfservices extends PolymerElement {
         }
         .support-icon{
           padding-left: 20px;
-        }
+		}
+		@media only screen and (max-width: 768px){
+			.container{
+				width:100%;
+				text-align:center;
+			}
+			.container a {
+				margin:0 auto;
+			}
+		}
       </style>
         <div class="container">
             <div class="title">Professional Services</div>

@@ -25,7 +25,16 @@ class NetworkRoute extends PolymerElement {
           flex-grow: 1;
           padding-left: 30px;
         }
-  
+		@media only screen and (max-width: 768px){
+			.main {
+				flex-grow: 1;
+				padding-left: 0px;
+			  }
+			.side {
+				width: 100%;
+				padding-left: 0;
+			}
+		}
       </style>
 
       <!-- Google Tag Manager (noscript) -->

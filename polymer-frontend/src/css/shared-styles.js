@@ -96,7 +96,8 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(249,250,250,1) 100%);
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', 
         endColorstr='#f9fafa',GradientType=0 );
-    }
+	}
+	
     </style>
   </template>
 </dom-module>`;

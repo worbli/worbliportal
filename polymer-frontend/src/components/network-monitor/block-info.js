@@ -45,7 +45,13 @@ class BlockInfo extends PolymerElement {
                 padding: 1px 12px 12px;
                 text-transform: uppercase;
                 letter-spacing: 1px;
-            }
+			}
+			@media only screen and (max-width: 768px){
+				.container{
+					width:100%;
+					text-align:center;
+				}
+			}
         </style>
         <div class="container">
             <div class="title">Current Block Info</div>
