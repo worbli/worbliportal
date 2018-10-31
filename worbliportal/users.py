@@ -82,6 +82,7 @@ def registration_request():
     emailed to a user, this verifies the email doesn't have an outstanding
     reg key and sends it back to the front end
     """
+    json_dict = {}
     try:
         request_json = request.get_json()
         logging.info(request_json)
@@ -90,7 +91,12 @@ def registration_request():
         if not validate_email(email):
             msg = "invalid email"
             raise InvalidUsage(msg, status_code=400)
-        registration_code = create_registration_record(email, optin)
+        
+        json_dict['registration_code'] = uuid.uuid4().hex
+        (send_reg_code_email(
+            registration_code=json_dict['registration_code'], email=email) 
+            if FLASK_ENV not in ("development"))
+        create_registration_record(json_dict['registration_code'], email, optin)
         session.commit()
     except InvalidUsage as iux:
         session.rollback()
@@ -103,11 +109,6 @@ def registration_request():
     finally:
         session.close()
 
-    if FLASK_ENV in ("development"):
-        json_dict = {"success" : True, "registration_code" : registration_code}
-    else:
-        json_dict = {"success": True}
-        send_reg_code_email(registration_code=registration_code, email=email)
     return jsonify(json_dict)
 
 
@@ -329,11 +330,10 @@ def invalidate_registration_record_by_code(registration_code, invalidation_type=
     return True
 
 
-def create_registration_record(email, optin):
+def create_registration_record(email, optin, registration_code):
     """ Method to create a registration record
     """
     try:
-        registration_code = uuid.uuid4().hex
         reg_req = RegistrationRequest(
             email=email,
             registration_code=registration_code,
