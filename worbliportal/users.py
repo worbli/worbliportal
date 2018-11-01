@@ -332,7 +332,7 @@ def validate_registration_record(registration_code=None, email=None):
         registration_code=registration_code).first()
     if registration_record is None:
         return False
-    if not registration_record.email == email:
+    if not registration_record.email.lower() == email.lower():
         return False
     return True
 
