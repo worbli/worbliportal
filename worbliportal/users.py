@@ -158,11 +158,11 @@ def register():
         validate_user_create_fields(req_json)
         # create user
         user = create_user(req_json)
+        session.commit()
         jtw = encode_auth_token(user.id)
         tmp = base64.urlsafe_b64encode(jtw)
         jwt = tmp.decode('utf-8')
 
-        session.commit()
         if FLASK_ENV not in ("development"):
             send_join_successful_email(email)
     except InvalidUsage as iux:
