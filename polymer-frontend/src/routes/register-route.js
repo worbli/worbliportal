@@ -192,16 +192,8 @@ class RegisterRoute extends MyURLSetter(PolymerElement) {
       </style>
       
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
-      <app-route route="{{route}}" pattern="[[rootPath]]dashboard/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+      <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
       <div class="split">
-        <div class="side">
-          <div class="container">
-              <a href="/dashboard/profile"><div class="navigation selected">My Profile</div></a>
-              <a href="/dashboard/verify"><div class="navigation">Identity Verification</div></a>
-              <a href="/dashboard/claim"><div class="navigation">Claim Sharedrop</div></a>
-              <a href="/"><div class="navigation">Logout</div></a>
-          </div>
-        </div>
         <div class="main">
           <h1>My Profile</h1>
           <div class="input-area">
@@ -546,7 +538,8 @@ class RegisterRoute extends MyURLSetter(PolymerElement) {
     _deleteRegCode (){
         let regCode = this.subroute.path;
         let url = this.baseAPIurl;
-        url = url + "/api/registrationRequest/" + regCode;
+        // Reg code comes w/ the slash for some reason
+        url = url + "/api/registrationRequest" + regCode;
         this.$.registrationValidation.url = url;
         this.$.registrationValidation.method="delete";
         this.$.registrationValidation.generateRequest();
@@ -569,14 +562,14 @@ class RegisterRoute extends MyURLSetter(PolymerElement) {
         let method = this.$.registrationValidation.method;
         if ( method == "get"){
             if (response.recordValid == false)  {
-                this.set('route.path', '/error');
+                console.log("record not valid");
+                //this.set('route.path', '/error');
             }
         } else if (method == "delete"){
             console.log("delete method called");
-            this._deleteRegCode();
         } else if (method == "post"){
             console.log("post method called");
-            this._submitRegistration();
+            this._deleteRegCode();
             this.set('route.path', '/dashboard/landing');
         }
     }
