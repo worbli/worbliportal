@@ -1,1 +1,0 @@
-var configBaseURL = "http://0.0.0.0:5000";

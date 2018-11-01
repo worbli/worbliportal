@@ -2,7 +2,6 @@
 import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
 // This has the system baseURL and other things
 //
-import "../../config.js";
 
 let myURLSetter;
 myURLSetter = function(superClass) {
@@ -15,7 +14,7 @@ myURLSetter = function(superClass) {
                 baseAPIurl: {
                     type: String,
                     value: function() {
-                        return configBaseURL;
+                        return "http://0.0.0.0:5000";
                     }
                 },
                 jwt: String,
