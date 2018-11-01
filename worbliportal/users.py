@@ -92,14 +92,14 @@ def registration_request():
         logging.info(request_json)
         email = request_json['email']
         optin = request_json['optin']
-        if not validate_email(email):
+        if not validate_email(email.lower()):
             msg = "invalid email"
             raise InvalidUsage(msg, status_code=400)
         json_dict['registration_code'] = uuid.uuid4().hex
         if FLASK_ENV not in ("development"):
             send_reg_code_email(
-                registration_code=json_dict['registration_code'], email=email)
-        create_registration_record(email, optin, json_dict['registration_code'])
+                registration_code=json_dict['registration_code'], email=email.lower())
+        create_registration_record(email.lower(), optin, json_dict['registration_code'])
         session.commit()
     except InvalidUsage as iux:
         session.rollback()
@@ -147,7 +147,7 @@ def register():
     """
     try:
         req_json = request.get_json()
-        email = req_json['email']
+        email = req_json['email'].lower()
         # validate registration record
         if not validate_registration_record(
                 registration_code=req_json['registrationCode'],
@@ -185,7 +185,7 @@ def login():
     try:
         req_json = request.get_json()
         user = session.query(User).filter_by(
-            email=req_json['email']).first()
+            email=req_json['email'].lower()).first()
         if not user.is_authenticated(req_json['password']):
             msg = "Invalid password"
             raise InvalidUsage(msg, status_code=401)
