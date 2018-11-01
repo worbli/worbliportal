@@ -586,7 +586,9 @@ class RegisterRoute extends MyURLSetter(PolymerElement) {
         } else if (method == "post"){
             console.log("post method called");
             this._deleteRegCode();
-            this.set('route.path', '/dashboard/landing');
+            this.jwt = response.jwt;
+            localStorage.setItem('lsjwt', response.jwt);
+            this.set('route.path', '/dashboard/profile');
         }
     }
 } window.customElements.define('register-route', RegisterRoute);

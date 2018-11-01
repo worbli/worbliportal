@@ -163,7 +163,7 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
             this.$.loginFailure.style.display ='none';
 
             this.hide = true;
-            this.set('route.path', '/dashboard/landing');
+            this.set('route.path', '/dashboard/profile');
         }
     }
     handleUserError(event, request) {
