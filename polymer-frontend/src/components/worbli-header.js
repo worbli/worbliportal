@@ -1,5 +1,7 @@
 /*jslint esversion: 6 */
 import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import '@polymer/app-route/app-location.js';
+
 import '../css/shared-styles.js';
 
 class WorbliHeader extends PolymerElement {
@@ -95,6 +97,8 @@ class WorbliHeader extends PolymerElement {
         }
       }
     </style>
+        <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+
       <div class="container-header">
       <div class="logo"><a href="/" tabindex="0"><img src="./images/logo.svg" alt="Worbli" height="30px"></a></div>
           <button class="menu-toggle" on-click="_toggleMenu"></button>
@@ -116,27 +120,35 @@ class WorbliHeader extends PolymerElement {
         </div>
     `;
   }
-  static get properties() {
-    return {
-      prop1: {
-        type: String,
-        value: 'worbli-header',
-      },
-    };
-  }
+    static get properties() {
+        return {
+            prop1: {
+                type: String,
+                value: 'worbli-header',
+            },
+            route: {
+                type: String,
+                observer: '_onRouteChanged'
+            },
+        };
+    }
 
-  _signIn() {
-    this.dispatchEvent(new CustomEvent('overlay',{bubbles: true, composed: true, detail: {action: 'signin'}}));
-  }
+    _signIn() {
+        this.dispatchEvent(new CustomEvent('overlay',{bubbles: true, composed: true, detail: {action: 'signin'}}));
+    }
 
-  _join() {
-    this.dispatchEvent(new CustomEvent('overlay',{bubbles: true, composed: true, detail: {action: 'join'}}));
-  }
+    _join() {
+        this.dispatchEvent(new CustomEvent('overlay',{bubbles: true, composed: true, detail: {action: 'join'}}));
+    }
 
-  _toggleMenu(){
-          var menuEl = this.shadowRoot.querySelector('.navigation');
-          menuEl.classList.toggle('open');
-  }
+    _toggleMenu(){
+        var menuEl = this.shadowRoot.querySelector('.navigation');
+        menuEl.classList.toggle('open');
+    }
+    _onRouteChanged(bd,bc) {
+        console.log("Route changed: "  );
+            this.$.logout.style.display = "block";
+    }
     _deleteJWT(){
         localStorage.removeItem("lsjwt");
         this.$.logout.style.display = "none";
