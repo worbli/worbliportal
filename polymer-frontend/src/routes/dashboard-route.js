@@ -62,6 +62,16 @@ class DashboardRoute extends PolymerElement {
       this.page = 'error';
     }
   }
+    ready()  {
+        super.ready();
+        console.log("in the dashboard ready");
+        let lsjwt = localStorage.getItem('lsjwt');
+        if (lsjwt == null) {
+            this.set('route.path', '/');
+        }
+
+    }
+
 
   _pageChanged(page) {
     switch (page) {
