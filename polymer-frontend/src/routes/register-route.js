@@ -565,6 +565,7 @@ class RegisterRoute extends MyURLSetter(PolymerElement) {
         super.ready();
 
         let regCode = this.subroute.path;
+        regCode = regCode.substr(1);
         let url = this.baseAPIurl;
         url = url + "/api/registrationRequest/" + regCode;
         this.$.registrationValidation.url = url;
