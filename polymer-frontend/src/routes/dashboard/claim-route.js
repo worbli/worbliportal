@@ -2,7 +2,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '../../css/shared-styles.js';
 import '../../components/worbli-footer.js';
-import '@polymer/iron-localstorage/iron-localstorage.js';
 import { MyURLSetter } from "../../mixins/worbli-urlsetter.js";
 
 class ClaimRoute extends MyURLSetter(PolymerElement) {
@@ -193,7 +192,7 @@ class ClaimRoute extends MyURLSetter(PolymerElement) {
               <a href="/dashboard/profile"><div class="navigation">My Profile</div></a>
               <a href="/dashboard/verify"><div class="navigation">Identity Verification</div></a>
               <a href="/dashboard/claim"><div class="navigation selected">Claim Sharedrop</div></a>
-              <a href="/"><div class="navigation">Logout</div></a>
+              <a href="/" on-click="_logout"><div class="navigation">Logout</div></a>
           </div>
         </div>
         <div class="main">
@@ -287,8 +286,14 @@ class ClaimRoute extends MyURLSetter(PolymerElement) {
         console.log('in claim');
         let lsjwt = localStorage.getItem('lsjwt');
         this.jwt = lsjwt;
-        console.log(lsjwt);
-        console.log(this.jwt);
     }
+    _logout(){
+        localStorage.removeItem("lsjwt");
+        localStorage.removeItem('worbli-firstname' );
+        localStorage.removeItem('worbli-lastname');
+        localStorage.removeItem('worbli-email');
+        console.log("logging out?");
+    }
+
 
 } window.customElements.define('claim-route', ClaimRoute);

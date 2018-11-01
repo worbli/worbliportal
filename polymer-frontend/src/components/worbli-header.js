@@ -113,8 +113,6 @@ class WorbliHeader extends PolymerElement {
         <div class="buttons">
           <button type="button" on-click="_signIn" tabindex="5">SIGN IN</button>
           <button type="button" class="selected" on-click="_join" tabindex="6">JOIN NOW</button>
-          <span id="logout" style="display:none">
-          <button type="button" on-click="_deleteJWT" tabindex="5">LOG OUT</button>
           </span>
         </div>
         </div>
@@ -147,11 +145,9 @@ class WorbliHeader extends PolymerElement {
     }
     _onRouteChanged(bd,bc) {
         console.log("Route changed: "  );
-            this.$.logout.style.display = "block";
     }
     _deleteJWT(){
         localStorage.removeItem("lsjwt");
-        this.$.logout.style.display = "none";
     }
 
     ready() {
@@ -161,7 +157,6 @@ class WorbliHeader extends PolymerElement {
         console.log(localJWT);
         if (localJWT != null) {
             console.log("JWT has a value?");
-            this.$.logout.style.display = "block";
         }
     }
 

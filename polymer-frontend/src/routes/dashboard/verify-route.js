@@ -201,7 +201,7 @@ class VerifyRoute extends PolymerElement {
               <a href="/dashboard/profile"><div class="navigation">My Profile</div></a>
               <a href="/dashboard/verify"><div class="navigation selected">Identity Verification</div></a>
               <a href="/dashboard/claim"><div class="navigation">Claim Sharedrop</div></a>
-              <a href="/"><div class="navigation">Logout</div></a>
+              <a href="/" on-click="_logout"><div class="navigation">Logout</div></a>
           </div>
         </div>
         <div class="main">
@@ -218,4 +218,11 @@ class VerifyRoute extends PolymerElement {
       <worbli-footer name="footer"></worbli-footer>
     `;
   }
+    _logout(){
+        localStorage.removeItem("lsjwt");
+        localStorage.removeItem('worbli-firstname' );
+        localStorage.removeItem('worbli-lastname');
+        localStorage.removeItem('worbli-email');
+        console.log("logging out?");
+    }
 } window.customElements.define('verify-route', VerifyRoute);

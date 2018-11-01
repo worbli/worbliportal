@@ -588,6 +588,7 @@ class RegisterRoute extends MyURLSetter(PolymerElement) {
             this._deleteRegCode();
             this.jwt = response.jwt;
             localStorage.setItem('lsjwt', response.jwt);
+            localStorage.setItem('worbli-regSucess', true);
             this.set('route.path', '/dashboard/profile');
         }
     }

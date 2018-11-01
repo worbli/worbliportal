@@ -93,11 +93,12 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
                 handle-as="json"
                 on-response="handleLogin"
                 on-error="handleUserError"
+                method="POST"
                 debounce-duration="300">
           </iron-ajax>
             <h2>Sign In</h2>
             <p>Welcome back to WORBLI.....</p>
-                <iron-form id="login">
+                <iron-form id="log">
                 <form>
                     <iron-input type="text" class="text" name="email" placeholder="Email" id="email" auto-validate required>
                       <input type="text" class="text" name="email" placeholder="Email" id="email" required/>
@@ -129,17 +130,19 @@ class WorbliSignin extends MyURLSetter(PolymerElement) {
         };
     }
     _checkPassword() {
-        if (this.$.login.validate()) {
+        if (this.$.log.validate()) {
             let params = {};
             params.email = this.$.email.value;
             params.password = this.$.password.value;
             let url = this.baseAPIurl;
             url = url + "/api/login/";
             this.$.loginHandler.url = url;
-            this.$.loginHandler.method="post";
             this.$.loginHandler.headers['content-type']="application/json";
             this.$.loginHandler.body = params;
+            console.log("before posting");
             this.$.loginHandler.generateRequest();
+            console.log("after posting");
+
         }
     }
     _join(){
