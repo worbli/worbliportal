@@ -317,7 +317,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
             let params = {};
             params.password = this.$.pass.value;
             let url = this.baseAPIurl;
-            url = url + "/api/register/";
+            url = url + "/api/changePassword/";
             this.$.userAccess.url = url;
             this.$.userAccess.method="put";
             this.$.userAccess.headers['content-type']="application/json";
