@@ -68,17 +68,11 @@ class DashboardRoute extends PolymerElement {
         case 'claim':
             import('./dashboard/claim-route.js');
             break;  
-        case 'email':
-            import('./dashboard/email-route.js');
-            break;
         case 'profile':
             import('./dashboard/profile-route.js');
             break;
         case 'verify':
             import('./dashboard/verify-route.js');
-            break;
-        case 'landing':
-            import('./dashboard/landing-route.js');
             break;
     }
   }

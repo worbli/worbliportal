@@ -1,3 +1,4 @@
+/*jslint esversion: 6 */
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/app-route/app-location.js';
 import '../css/shared-styles.js';
@@ -113,41 +114,41 @@ class MainRoute extends PolymerElement {
         .btn-join {
           display: block;
           text-align: center;
-		}
-		
-		.mobile-signup-buttons{
-			display:none;
-		}
+        }
+        
+        .mobile-signup-buttons{
+            display:none;
+        }
 
 
-		@media only screen and (max-width: 480px){
+        @media only screen and (max-width: 480px){
 
-		}
+        }
 
-		@media only screen and (max-width: 768px){
-			.mobile-signup-buttons{
-				display:block;
-			}
-			.box-link{
-				width:100%;
-				display:block;
-			}
-			.side {
-				width: 100%;
-				padding-left: 0;
-			}
+        @media only screen and (max-width: 768px){
+            .mobile-signup-buttons{
+                display:block;
+            }
+            .box-link{
+                width:100%;
+                display:block;
+            }
+            .side {
+                width: 100%;
+                padding-left: 0;
+            }
 
-			.square {
-				width: 100%;
-				min-height: 400px;
-				margin-right: 24px;
-				margin-bottom: 24px;
-			}
+            .square {
+                width: 100%;
+                min-height: 400px;
+                margin-right: 24px;
+                margin-bottom: 24px;
+            }
 
-		}
+        }
 
 
-		@media only screen and (max-width: 992px){}
+        @media only screen and (max-width: 992px){}
       </style>
 
 
@@ -229,11 +230,11 @@ class MainRoute extends PolymerElement {
   }
 
   ready(){
-	  super.ready();
-	  // if user is logged in, go to dashboard
-	  if(localStorage.getItem('lsjwt')){
-		this.set('route.path', '/dashboard/landing');
-	  }
+      super.ready();
+      // if user is logged in, go to dashboard
+      if(localStorage.getItem('lsjwt')){
+        this.set('route.path', '/dashboard/profile');
+      }
   }
 
 } window.customElements.define('main-route', MainRoute);
