@@ -7,4 +7,3 @@ local_settings.py
 build/
 node_modules/
 .DS_Store
-config.json
