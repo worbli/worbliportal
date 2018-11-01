@@ -9,6 +9,7 @@ from datetime import datetime
 import logging
 import uuid
 from jwt import ExpiredSignatureError, InvalidTokenError
+from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 
 from validate_email import validate_email
@@ -184,8 +185,9 @@ def login():
     """
     try:
         req_json = request.get_json()
-        user = session.query(User).filter_by(
-            email=req_json['email'].lower()).first()
+        email = req_json['email'].lower()
+        user = session.query(User).filter(
+            func.lower(User.email) == email).first()
         if not user.is_authenticated(req_json['password']):
             msg = "Invalid password"
             raise InvalidUsage(msg, status_code=401)
