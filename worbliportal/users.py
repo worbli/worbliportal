@@ -4,6 +4,7 @@ Blueprint routes for our app
 # pylint can't find anything for db
 # pylint: disable=no-member
 import base64
+import re
 from datetime import datetime
 import logging
 import uuid
@@ -14,6 +15,7 @@ from validate_email import validate_email
 
 from flask import Blueprint, jsonify, render_template, request
 from flask_mail import Message
+from flask_bcrypt import Bcrypt
 from worbliportal.custom_error import InvalidUsage
 from worbliportal.database import WorkerSessionmaker
 from worbliportal.local_settings import FLASK_ENV, MAIL_SENDER
@@ -23,8 +25,10 @@ from worbliportal.util.token import authorize, decode_auth_token, encode_auth_to
 
 USER_ROUTES = Blueprint('user_Routes', __name__)
 session = WorkerSessionmaker() #pylint: disable=invalid-name
+BCRYPT = Bcrypt()
 
-#MAIL_SENDER = "worbliportal@eosdetroit.io"
+
+PASSWORD_REGEXP = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})'
 
 
 @USER_ROUTES.route('/sm123tes654/')
@@ -255,6 +259,31 @@ def protected_test(user_id):
     """
     json_dict = {"who rules": "you do, you rule"}
     json_dict['tokenContent'] = user_id
+    return jsonify(json_dict)
+
+
+@USER_ROUTES.route('/api/changePassword/', methods=['PUT'])
+@authorize
+def update_password(user_id):
+    """
+    Allow a user to change their password.
+    """
+    try:
+        req_json = request.get_json()
+        password = req_json["password"]
+        if not bool(re.match(PASSWORD_REGEXP, password)):
+            msg = 'Password does not meet the requirements.'
+            raise InvalidUsage(msg, status_code=400)
+        user = session.query(User).get(user_id)
+        user.password = BCRYPT.generate_password_hash(password).decode('utf-8')
+        session.add(user)
+        session.commit()
+    except InvalidUsage as iux:
+        raise iux
+    except Exception as exc:
+        msg = str(exc)
+        raise InvalidUsage(msg, status_code=400)
+    json_dict = {'success': True}
     return jsonify(json_dict)
 
 

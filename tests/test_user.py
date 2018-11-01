@@ -147,6 +147,26 @@ def test_get_user_details(client, db_session):#pylint:disable=unused-argument
     assert trv2.status_code == 200
 
 
+# db_session mocks the db session so we don't leave noise in our tests
+def test_update_password(client, db_session):#pylint:disable=unused-argument
+    """
+    verify user details are returned
+    """
+    user = create_test_user()
+    json_data = {"email": user.email, "password": "password"}
+    trv = client.post('/api/login/', json=json_data)
+    json_response = trv.get_json()
+    logging.info(json_response)
+    token = "Bearer:{}".format(json_response['jwt'])
+    headers = {"Authorization": token}
+    json_data['password'] = 'Passw0rd2#'
+    trv2 = client.put('/api/changePassword/', json=json_data, headers=headers)
+    pw_json = trv2.get_json()
+    logging.info(pw_json)
+    assert trv2.status_code == 200
+    assert pw_json['success'] is True
+
+
 def create_test_user(email=None, password="password"):
     """
     helper function for creating users
