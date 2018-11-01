@@ -116,8 +116,8 @@ sudo -u deploy -H sh -c "source /opt/worbliportal-venv/bin/activate; pip3.6 inst
 if [ -f /opt/worbliportal/worbliportal/local_settings.py ]; then
     mv /opt/worbliportal/worbliportal/local_settings.py /tmp
 fi
-if [ -f /opt/worbliportal/polymer-frontend/config.json ]; then
-    mv /opt/worbliportal/polymer-frontend/config.json /tmp
+if [ -f /opt/worbliportal/polymer-frontend/config.js ]; then
+    mv /opt/worbliportal/polymer-frontend/config.js /tmp
 fi
 
 if [ ! -d /opt/worbliportal ]; then
@@ -129,8 +129,8 @@ cp -rf /vagrant/* /opt/worbliportal/
 if [ -f /tmp/local_settings.py ]; then
     mv /tmp/local_settings.py /opt/worbliportal/worbliportal/
 fi
-if [ -f /tmp/config.json ]; then
-     mv /tmp/config.json /opt/worbliportal/polymer-frontend
+if [ -f /tmp/config.js ]; then
+     mv /tmp/config.js /opt/worbliportal/polymer-frontend
 fi
 
 echo 'deploy   ALL=(ALL)      NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
