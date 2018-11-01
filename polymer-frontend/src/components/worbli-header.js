@@ -97,7 +97,7 @@ class WorbliHeader extends PolymerElement {
     </style>
       <div class="container-header">
       <div class="logo"><a href="/" tabindex="0"><img src="./images/logo.svg" alt="Worbli" height="30px"></a></div>
-		  <button class="menu-toggle" on-click="_toggleMenu"></button>
+          <button class="menu-toggle" on-click="_toggleMenu"></button>
       <div class="navigation">
           <ul>
             <li><a href="/about/" tabindex="1">ABOUT</a></li>
@@ -109,8 +109,11 @@ class WorbliHeader extends PolymerElement {
         <div class="buttons">
           <button type="button" on-click="_signIn" tabindex="5">SIGN IN</button>
           <button type="button" class="selected" on-click="_join" tabindex="6">JOIN NOW</button>
+          <span id="logout" style="display:none">
+          <button type="button" on-click="_deleteJWT" tabindex="5">LOG OUT</button>
+          </span>
         </div>
-	    </div>
+        </div>
     `;
   }
   static get properties() {
@@ -131,8 +134,23 @@ class WorbliHeader extends PolymerElement {
   }
 
   _toggleMenu(){
-	  	var menuEl = this.shadowRoot.querySelector('.navigation');
-	  	menuEl.classList.toggle('open');
+          var menuEl = this.shadowRoot.querySelector('.navigation');
+          menuEl.classList.toggle('open');
   }
+    _deleteJWT(){
+        localStorage.removeItem("lsjwt");
+        this.$.logout.style.display = "none";
+    }
+
+    ready() {
+        super.ready();
+        let localJWT = localStorage.getItem("lsjwt");
+        console.log("jwt?");
+        console.log(localJWT);
+        if (localJWT != null) {
+            console.log("JWT has a value?");
+            this.$.logout.style.display = "block";
+        }
+    }
 
 } window.customElements.define('worbli-header', WorbliHeader);

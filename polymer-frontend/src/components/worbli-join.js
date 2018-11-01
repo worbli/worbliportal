@@ -74,9 +74,9 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
             cursor: pointer;
             font-weight: 600;
         }
-		.errorMsg{
-			color:red;
-		}
+        .errorMsg{
+            color:red;
+        }
       </style>
             <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
             <iron-ajax
@@ -85,25 +85,29 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
                     on-response="handleRegister"
                     on-error="handleUserError"
                     debounce-duration="300">
-			</iron-ajax>
-			<div class="joinForm">
-				<h2>Join WORBLI</h2>
-				<p>WORBLI is the place to access smarter financial services</p>
-				<div id="registrationRequestFailure" style="display:none;" >
-					<p class="errorMsg">There was a problem with your registration request please confirm
-				your email and that you don't have an existing request</p>
-				</div>
+            </iron-ajax>
+            <div class="joinForm" id="joinForm">
+                <h2>Join WORBLI</h2>
+                <p>WORBLI is the place to access smarter financial services</p>
+                <div id="registrationRequestFailure" style="display:none;" >
+                    <p class="errorMsg">There was a problem with your registration request please confirm
+                your email and that you don't have an existing request</p>
+                </div>
 
-				<iron-form id="join">
-					<form method="POST" >
-						<input type="text" class="text" placeholder="Email Address" id="email" required>
-						<label><input type="checkbox" name="checkbox" value="value" required> I agree to the <span><a href="/terms/">Terms and Privacy Policy</a></span></label></br>
-						<label><input type="checkbox" name="checkbox" value="value" id="optin"> I'm happy to recieve marketing communications from WORBLI</label></br></br>
-						<button class="btn-critical" on-click="_sendEmail">Join</button>
-					</form>
-				</iron-form>
-				<div class="center">Already on WORBLI? <span on-click="_signIn">Log In</span></div>
-			</div>
+                <iron-form id="join">
+                    <form method="POST" >
+                        <input type="text" class="text" placeholder="Email Address" id="email" required>
+                        <label><input type="checkbox" name="checkbox" value="value" required> I agree to the <span><a href="/terms/">Terms and Privacy Policy</a></span></label></br>
+                        <label><input type="checkbox" name="checkbox" value="value" id="optin"> I'm happy to recieve marketing communications from WORBLI</label></br></br>
+                        <button class="btn-critical" on-click="_sendEmail">Join</button>
+                    </form>
+                </iron-form>
+            </div>
+                <div id="sentNotice" style="display:none;" >
+                  <h2>Sent</h2>
+                    <p>Please check your email, we have sent you a confirmation email to: {{email}}</p>
+                </div>
+            <div class="center">Already on WORBLI? <span on-click="_signIn">Log In</span></div>
     `;
   }
     static get properties() {
@@ -118,6 +122,10 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
                 reflectToAttribute: true,
                 notify: true,
             },
+            email: {
+                type: String,
+                default: 'none'
+            }
         };
     }
 
@@ -137,11 +145,18 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
     }
 
     handleRegister(event, request) {
-		var email = this.$.email.value;
-		var joinForm = this.shadowRoot.querySelector('.joinForm');
-		joinForm.innerHTML = `<h2>Sent</h2>
-		<p>Please check your email, we have sent you a confirmation email to: ${email}</p>
-		<div class="center">Already on WORBLI? <span on-click="_signIn">Log In</span></div>`;
+        var email = this.$.email.value;
+        //var joinForm = this.shadowRoot.querySelector('.joinForm');
+        /*
+        var joinForm = this.$.joinForm;
+        joinForm.innerHTML = `<h2>Sent</h2>
+        <p>Please check your email, we have sent you a confirmation email to: ${email}</p>
+        <div class="center">Already on WORBLI? <span on-click="_signIn">Log In</span></div>`;
+        */
+        this.email = email;
+        this.$.joinForm.style.display ='none';
+        this.$.sentNotice.style.display ='block';
+
         var response = request.response;
         console.log("we got ");
         console.log(JSON.stringify(response));
@@ -155,6 +170,7 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
     }
 
     _signIn(){
+        console.log("clicked login in thing");
         this.join = false;
     }
 
