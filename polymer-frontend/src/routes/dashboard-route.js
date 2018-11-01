@@ -28,8 +28,6 @@ class DashboardRoute extends PolymerElement {
         <profile-route name="profile" route="{{subroute}}"></profile-route>
         <verify-route name="verify"></verify-route>
         <claim-route name="claim"></claim-route>
-        <!-- TODO: Delete email route once implemented -->
-        <email-route name="email"></email-route> 
         
       </iron-pages>
       
@@ -57,8 +55,8 @@ class DashboardRoute extends PolymerElement {
 
   _routePageChanged(page, subroute) {
     if (!page) {
-      this.page = 'email';
-    } else if (['claim', 'email', 'profile', 'verify'].indexOf(page) !== -1) {
+      this.page = 'profile';
+    } else if (['claim', 'profile', 'verify'].indexOf(page) !== -1) {
       this.page = page;
     } else {
       this.page = 'error';
