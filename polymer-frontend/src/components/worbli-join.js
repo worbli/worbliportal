@@ -146,31 +146,20 @@ class WorbliJoin extends MyURLSetter(PolymerElement) {
 
     handleRegister(event, request) {
         var email = this.$.email.value;
-        //var joinForm = this.shadowRoot.querySelector('.joinForm');
-        /*
-        var joinForm = this.$.joinForm;
-        joinForm.innerHTML = `<h2>Sent</h2>
-        <p>Please check your email, we have sent you a confirmation email to: ${email}</p>
-        <div class="center">Already on WORBLI? <span on-click="_signIn">Log In</span></div>`;
-        */
         this.email = email;
         this.$.joinForm.style.display ='none';
         this.$.sentNotice.style.display ='block';
 
         var response = request.response;
-        console.log("we got ");
-        console.log(JSON.stringify(response));
         this.$.registrationRequestFailure.style.display ='none';
     }
 
     handleUserError(event, request) {
-        console.log('errored');
         this.$.registrationRequestFailure.style.display ='block';
 
     }
 
     _signIn(){
-        console.log("clicked login in thing");
         this.join = false;
     }
 
