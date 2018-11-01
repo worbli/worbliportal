@@ -478,11 +478,12 @@ class RegisterRoute extends MyURLSetter(PolymerElement) {
                             <div class="form-inputs">
                             <label>Password</label>
 
+                            <div id="misMatchedPass" style="display:none;"> <font color="red"> Passwords don't match </font></div>
+                            <div id="shortPass" style="display:none;"> <font color="red"> Password is too short </font></div>
+                            <div id="insufficientlyStrong" style="display:none;"> <font color="red"> Password requires one upper case, one lower case, one symbol and one number </font></div>
                             <input id="pass" name="password" type="password" class="text" required>
-                            <div id="shortPass" style="display:none;"> Password is too short </div>
                             <label>Confirm Password</label>
                             <input id="confirmPass" name="confirmPass" type="password" class="text" required>
-                            <div id="misMatchedPass" style="display:none;"> Passwords don't match </div>
                         </div>
                     </div>
                     <div class="footer">
@@ -518,16 +519,31 @@ class RegisterRoute extends MyURLSetter(PolymerElement) {
     }
 
     _validatePassword(){
+        //const strongRegex = new RegExp("^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#\$%\^&*])(?=.{8,})");
+        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
         console.log("attempting to validate password");
-        if (this.$.pass.value.length < 8) {
+        let pass = this.$.pass.value;
+        if (pass.length < 8) {
+            this.$.insufficientlyStrong.style.display = 'None';
+            this.$.misMatchedPass.style.display = 'none';
             this.$.shortPass.style.display = 'block';
             return false;
         }
+        console.log("password long enough");
+        if (!strongRegex.test(pass) ) {
+            this.$.insufficientlyStrong.style.display = 'block';
+            this.$.misMatchedPass.style.display = 'none';
+            this.$.shortPass.style.display = 'none';
+            return false;
+        }
+        console.log("password sufficiently complex");
         if (this.$.pass.value == this.$.confirmPass.value) {
+            this.$.insufficientlyStrong.style.display = 'None';
             this.$.misMatchedPass.style.display = 'none';
             this.$.shortPass.style.display = 'none';
             return true;
         } else {
+            this.$.insufficientlyStrong.style.display = 'None';
             this.$.shortPass.style.display = 'none';
             this.$.misMatchedPass.style.display = 'block';
             return false;
