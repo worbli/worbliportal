@@ -2,7 +2,7 @@
 import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin.js';
 // This has the system baseURL and other things
 //
-import "../../config.json";
+import "../../config.js";
 
 let myURLSetter;
 myURLSetter = function(superClass) {
