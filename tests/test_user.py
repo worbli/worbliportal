@@ -3,6 +3,7 @@ Behavioral tests of endpoint
 """
 
 import logging
+import uuid
 from worbliportal.models import RegistrationRequest, User
 from worbliportal.users import create_registration_record, create_user
 
@@ -37,7 +38,9 @@ def test_registration_validation(client, db_session):#pylint:disable=unused-argu
     Test registration validation works to verify existing codes
     """
     optin = True
-    registration_code = create_registration_record("dude3@so.co", optin)
+    email = "dude3@so.co"
+    registration_code = uuid.uuid4().hex
+    create_registration_record(email, optin, registration_code)
     url = "/api/registrationRequest/{}".format(str(registration_code))
     trv = client.get(url)
     assert trv.status_code == 200
@@ -49,7 +52,9 @@ def test_invalidate_registration_request(client, db_session):#pylint:disable=unu
     verify delete has intended effect
     """
     optin = True
-    registration_code = create_registration_record("dude3@so.co", optin)
+    registration_code = uuid.uuid4().hex
+    email = "dude3@so.co"
+    create_registration_record(email, optin, registration_code)
     url = "/api/registrationRequest/{}".format(str(registration_code))
     trv = client.delete(url)
     assert trv.status_code == 200
@@ -61,7 +66,8 @@ def test_valid_user_registration(client, db_session):
     """
     email = "dude3@so.co"
     optin = True
-    registration_code = create_registration_record(email, optin)
+    registration_code = uuid.uuid4().hex
+    create_registration_record(email, optin, registration_code)
     json_data = {
         "email": email,
         "location" :"here",
@@ -148,7 +154,8 @@ def create_test_user(email=None, password="password"):
     if email is None:
         email = "dude3@so.co"
     optin = True
-    registration_code = create_registration_record(email, optin)
+    registration_code = uuid.uuid4().hex
+    create_registration_record(email, optin, registration_code)
     json_data = {
         "email": email,
         "location" :"here",
