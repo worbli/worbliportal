@@ -26,8 +26,8 @@ class DashboardRoute extends PolymerElement {
       <app-route route="{{route}}" pattern="[[rootPath]]dashboard/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
       <iron-pages selected="[[page]]" attr-for-selected="name" role="main" class="center">
         <profile-route name="profile" route="{{subroute}}"></profile-route>
-        <verify-route name="verify"></verify-route>
-        <claim-route name="claim"></claim-route>
+        <!-- <verify-route name="verify"></verify-route>
+        <claim-route name="claim"></claim-route> -->
         
       </iron-pages>
       
@@ -56,7 +56,8 @@ class DashboardRoute extends PolymerElement {
   _routePageChanged(page, subroute) {
     if (!page) {
       this.page = 'profile';
-    } else if (['claim', 'profile', 'verify'].indexOf(page) !== -1) {
+    // } else if (['claim', 'profile', 'verify'].indexOf(page) !== -1) {
+    } else if (['profile'].indexOf(page) !== -1) {
       this.page = page;
     } else {
       this.page = 'error';

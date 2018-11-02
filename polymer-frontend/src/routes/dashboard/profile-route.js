@@ -191,8 +191,8 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
         <div class="side">
           <div class="container">
               <a href="/dashboard/profile"><div class="navigation selected">My Profile</div></a>
-              <a href="/dashboard/verify"><div class="navigation">Identity Verification</div></a>
-              <a href="/dashboard/claim"><div class="navigation">Claim Sharedrop</div></a>
+                <div class="navigation">Identity Verification</div>
+                <div class="navigation">Claim Sharedrop</div>
               <a href="/" on-click="_logout"><div class="navigation">Logout</div></a>
           </div>
           <worbli-snapshot></worbli-snapshot>
