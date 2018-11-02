@@ -118,9 +118,9 @@ class AirgrabValidationRequest(DBH.Model): # pylint: disable=too-few-public-meth
     user = DBH.relationship("User", uselist=False)
     user_id = DBH.Column(DBH.Integer, DBH.ForeignKey('users.id'), nullable=False)
 
-    def __init__(self, worbli_account_name=None,worbli_owner_key=None,
-            worbli_active_key=None, security_code=None, snapshot_balance=None,
-            user_id=None):
+    def __init__(self, worbli_account_name=None, worbli_owner_key=None, #pylint: disable=too-many-arguments
+                 worbli_active_key=None, security_code=None, snapshot_balance=None,
+                 user_id=None):
         self.worbli_account_name = worbli_account_name
         self.worbli_owner_key = worbli_owner_key
         self.worbli_active_key = worbli_active_key
