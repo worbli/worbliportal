@@ -2,6 +2,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '../../css/shared-styles.js';
 import '../../components/worbli-footer.js';
+import '../../components/side-bar/worbli-snapshot.js';
 import { MyURLSetter } from "../../mixins/worbli-urlsetter.js";
 
 class ProfileRoute extends MyURLSetter(PolymerElement) {
@@ -194,6 +195,7 @@ class ProfileRoute extends MyURLSetter(PolymerElement) {
               <a href="/dashboard/claim"><div class="navigation">Claim Sharedrop</div></a>
               <a href="/" on-click="_logout"><div class="navigation">Logout</div></a>
           </div>
+          <worbli-snapshot></worbli-snapshot>
         </div>
         <div class="main">
           <h1>My Profile</h1>
