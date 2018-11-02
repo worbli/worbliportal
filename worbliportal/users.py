@@ -97,7 +97,7 @@ def registration_request():
             msg = "invalid email"
             raise InvalidUsage(msg, status_code=400)
         json_dict['registration_code'] = uuid.uuid4().hex
-        if FLASK_ENV not in ("development"):
+        if FLASK_ENV not in ("development"): #pylint: disable=superfluous-parens
             send_reg_code_email(
                 registration_code=json_dict['registration_code'], email=email.lower())
         create_registration_record(email.lower(), optin, json_dict['registration_code'])
@@ -164,7 +164,7 @@ def register():
         tmp = base64.urlsafe_b64encode(jtw)
         jwt = tmp.decode('utf-8')
 
-        if FLASK_ENV not in ("development"):
+        if FLASK_ENV not in ("development"):#pylint: disable=superfluous-parens
             send_join_successful_email(email)
     except InvalidUsage as iux:
         session.rollback()
