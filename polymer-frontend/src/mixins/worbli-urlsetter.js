@@ -14,7 +14,7 @@ myURLSetter = function(superClass) {
                 baseAPIurl: {
                     type: String,
                     value: function() {
-                        return "http://0.0.0.0:5000";
+                        return "https://portal-prod.worbli.io";
                     }
                 },
                 jwt: String,
