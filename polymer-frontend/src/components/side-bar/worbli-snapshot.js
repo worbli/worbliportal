@@ -126,7 +126,7 @@ class WorbliSnapshot extends PolymerElement {
   _checkSnapshot(){
     this.complete = true;
     if (this.accountName){
-      fetch(`https://{{apiEndpoint}}/api/v1/snap-shot/${this.accountName}`)
+      fetch(`/api/snapshotCheck/${this.accountName}`)
       .then((response) => {
           return response.json()
       })
