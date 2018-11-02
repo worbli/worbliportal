@@ -132,7 +132,7 @@ def send_reg_code_email(registration_code=None, email=None):
     """
     controller for sending reg code email
     """
-    logging.info(registration_code, email)
+    logging.info(email)
     msg = Message('Worbli Confirmation', sender=MAIL_SENDER, \
         recipients=[email])
     msg.html = render_template('register_email.html', securityCode=registration_code)
