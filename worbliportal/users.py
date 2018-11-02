@@ -9,6 +9,7 @@ from datetime import datetime
 import logging
 import uuid
 from jwt import ExpiredSignatureError, InvalidTokenError
+from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 
 from validate_email import validate_email
@@ -96,7 +97,7 @@ def registration_request():
             msg = "invalid email"
             raise InvalidUsage(msg, status_code=400)
         json_dict['registration_code'] = uuid.uuid4().hex
-        if FLASK_ENV not in ("development"):
+        if FLASK_ENV not in ("development"): #pylint: disable=superfluous-parens
             send_reg_code_email(
                 registration_code=json_dict['registration_code'], email=email.lower())
         create_registration_record(email.lower(), optin, json_dict['registration_code'])
@@ -158,12 +159,12 @@ def register():
         validate_user_create_fields(req_json)
         # create user
         user = create_user(req_json)
+        session.commit()
         jtw = encode_auth_token(user.id)
         tmp = base64.urlsafe_b64encode(jtw)
         jwt = tmp.decode('utf-8')
 
-        session.commit()
-        if FLASK_ENV not in ("development"):
+        if FLASK_ENV not in ("development"):#pylint: disable=superfluous-parens
             send_join_successful_email(email)
     except InvalidUsage as iux:
         session.rollback()
@@ -184,8 +185,9 @@ def login():
     """
     try:
         req_json = request.get_json()
-        user = session.query(User).filter_by(
-            email=req_json['email'].lower()).first()
+        email = req_json['email'].lower()
+        user = session.query(User).filter(
+            func.lower(User.email) == email).first()
         if not user.is_authenticated(req_json['password']):
             msg = "Invalid password"
             raise InvalidUsage(msg, status_code=401)
@@ -332,7 +334,7 @@ def validate_registration_record(registration_code=None, email=None):
         registration_code=registration_code).first()
     if registration_record is None:
         return False
-    if not registration_record.email == email:
+    if not registration_record.email.lower() == email.lower():
         return False
     return True
 
